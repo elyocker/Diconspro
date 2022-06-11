@@ -2,8 +2,7 @@
 
 class con_db extends mysqli
 {
-    public function __construct($host,$usuario,$pass,$nombd)
-    {
+    public function __construct($host,$usuario,$pass,$nombd){
         $this->host=$host;
         $this->usuario=$usuario;
         $this->pass=$pass;
