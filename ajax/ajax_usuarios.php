@@ -1,7 +1,10 @@
 <?php
 include_once "../modelo/conexion.php";
+session_start();
 
-switch ($_REQUEST['tipo']) {
+$tipo = isset($_REQUEST['tipo'])? $_REQUEST['tipo']:'';
+
+switch ($tipo) {
     case 'buscar':
         buscar();
         break;
@@ -19,12 +22,13 @@ switch ($_REQUEST['tipo']) {
         break;
         
     default:
-        # code...
+        buscar();
         break;
 }
 
-function Buscar(){         
-    $detalle = new con_db('127.0.0.1','root','','diconspro');
+function Buscar(){       
+      
+    $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
 
     $usu_cedula     = isset($_REQUEST['usu_cedula'])        ?$_REQUEST['usu_cedula']        : '';
     $usu_nombre     = isset($_REQUEST['usu_nombre'])        ?$_REQUEST['usu_nombre']        : '';
@@ -67,7 +71,7 @@ function Buscar(){
 }
 
 function update(){
-    $detalle = new con_db('127.0.0.1','root','','diconspro');
+    $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
 
     $codigo     = isset($_REQUEST['codigo'])        ?$_REQUEST['codigo']        : '';
 
@@ -110,7 +114,7 @@ function update(){
 }
 
 function delete(){
-    $detalle = new con_db('127.0.0.1','root','','diconspro');
+    $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
 
     $codigo     = isset($_REQUEST['codigo'])        ?$_REQUEST['codigo']        : '';
 
@@ -154,7 +158,7 @@ function delTree($dir) {
 }
 
 function estado(){
-    $detalle = new con_db('127.0.0.1','root','','diconspro');
+    $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
 
     $codigo     = isset($_REQUEST['codigo'])        ?$_REQUEST['codigo']        : '';
 
@@ -189,7 +193,7 @@ function estado(){
 }
 
 function unico_usu(){
-    $detalle = new con_db('127.0.0.1','root','','diconspro');
+    $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
 
     $usuario     = isset($_REQUEST['usuario']) ? $_REQUEST['usuario']  : '';
 

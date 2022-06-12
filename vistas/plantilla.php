@@ -1,3 +1,6 @@
+<?php 
+    session_start();
+ ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -47,10 +50,15 @@
         
         <!-- <script src="vistas/dist/js/demo.js"></script> -->
     </head>
-    <body class="hold-transition sidebar-mini">
+    <body class="hold-transition sidebar-mini ">
 
-        <div class="wrapper">        
-            <?php
+        <?php
+        
+        $_SESSION['inicio_sesion']  = isset($_SESSION['inicio_sesion']) ? $_SESSION['inicio_sesion']:  '';
+        
+        if ( $_SESSION['inicio_sesion']!='' && $_SESSION['inicio_sesion']=='ok') {
+            
+            echo'<div class="wrapper">';   
             //INICIO::menu de arriba
                 include "vistas/modulos/cabezote.php";
             //FIN::menu de arriba
@@ -63,9 +71,9 @@
                 $vista = (isset($_GET["vista"])) ? $_GET["vista"] : "";
 
                 if ($vista !='' ) {
-                   if (in_array($vista,array('usuarios','inicio') )) {
-                       include "vistas/modulos/".$vista.".php";
-                   }
+                   
+                    if (in_array($vista,array('usuarios','inicio','salir') )) include "vistas/modulos/".$vista.".php";
+                   
                 }else {
                     include "vistas/modulos/inicio.php";
                 }
@@ -75,8 +83,12 @@
             //INICIO::footer
                 include "vistas/modulos/footer.php";    
             //FIN::footer
-            ?>
-        </div>
+            echo'</div>';
+        }else {
+            include "vistas/modulos/login.php";
+        }
+
+        ?>
         <!-- ./wrapper -->
 
 

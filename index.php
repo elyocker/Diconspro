@@ -8,6 +8,8 @@
 //INICIO::inicio de modelos
 //FIN::inicio de modelos
 
+include_once ("global.inc");
+
 $plantilla = new PlantillaControlador();
 
 $plantilla-> ctrPlantilla();

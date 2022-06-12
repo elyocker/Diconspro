@@ -1,14 +1,119 @@
 <?php
 
-
-
 class usuarioControlador
 {
+    static public function ctrLogin(){
+
+        global $ipConect,$usuConect,$passConect,$proyeConect;
+
+        include_once "modelo/conexion.php";
+
+        $tipo = isset($_REQUEST['tipo'])? $_REQUEST['tipo']: '';
+        
+        if ($tipo=='login') {
+
+            $_SESSION['ipConect']       =$ipConect;
+            $_SESSION['usuConect']      =$usuConect;
+            $_SESSION['passConect']     =$passConect;
+            $_SESSION['proyeConect']    =$proyeConect;
+
+            date_default_timezone_set('America/Bogota');
+
+            $where="1=1";
+            $log_usuario    = isset($_REQUEST['log_usuario'])   ? $_REQUEST['log_usuario']   : '';
+            $log_password   = isset($_REQUEST['log_password'])  ? $_REQUEST['log_password']  : '';
+
+            if($log_usuario!='')  $where.=" AND usu_cuenta='$log_usuario'";
+            // if($log_password!='') $where.=" AND usu_pass  ='$log_password'";
+
+            $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
+            
+            $sql  = "SELECT usu_codigo,
+                            usu_cuenta,
+                            usu_pass,
+                            usu_estado,
+                            r.rol_nombre as rol,
+                            CONCAT(usu_nombre, ' ', usu_apellido) AS nombre_usu,
+                            usu_foto
+                FROM usuario u
+                LEFT JOIN roles r ON(r.rol_id=u.usu_rol)
+                WHERE $where ";
+
+            $result = $detalle->getDatos($sql);
+
+            $icon="";
+            $title="!";
+            $text="";
+            if (sizeof($result)) {
+               
+                    if ( (password_verify($log_password,$result[0]['usu_pass']))  && $result[0]['usu_cuenta']==$log_usuario) {
+
+                        if ($result[0]['usu_estado']=='1') {
+
+                            $ip_usuario= isset($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+                            
+                            $upd_camp="";
+                            if ($ip_usuario!='::1') {
+                                $dataArray = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip_usuario));
+                                $pais_usuario= $dataArray["geoplugin_countryName"];
+                                $upd_camp=",usu_ipcone='$ip_usuario',
+                                            usu_paiscone='$pais_usuario'";
+                            }
+
+                            $sql="  UPDATE usuario 
+                                    SET usu_ultmlog=current_timestamp
+                                        $upd_camp
+                                    WHERE usu_codigo='".$result[0]['usu_codigo']."'";
+        
+                            $res = $detalle->insert($sql);
+                            
+                            $_SESSION['inicio_sesion']  ="ok";
+                            $_SESSION['nombreUsuario'] =$result[0]['nombre_usu'];
+                            $_SESSION['urlFoto']       =$result[0]['usu_foto'];
+                            $_SESSION['usuCodigo']     =$result[0]['usu_codigo'];
+                            $_SESSION['logo']          ="img/dashboard/logo.png";
+                            $_SESSION['rol']           =$result[0]['rol_nombre'];                            
     
+                            if ($res=='ok') {
+                                echo '<script>
+                                    window.location = "inicio";
+                                </script>';
+                            }
+                        }else {
+                            $icon="error";
+                            $title="¡Lo sentimos!";
+                            $text="Su estado no es ACTIVO";
+                        }
+                    }else {
+                        $icon="error";
+                        $title="¡Lo sentimos!";
+                        $text="La contraseña o usuario son incorrectos";
+                    }  
+               
+                if ($icon!='') {
+                    echo"<script>
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: '$icon',
+                                title: '$title',
+                                text:  '$text',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });                       
+                    </script>";
+                }
+            }
+    
+            $detalle->close();
+        }
+        
+
+    }
+
     static public function getInput($tabla="",$campos="",$where="1=1"){
         include_once "modelo/conexion.php";
 
-        $detalle = new con_db('127.0.0.1','root','','diconspro');
+        $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
         $sql  = "SELECT $campos
             FROM $tabla 
             WHERE $where ";        
@@ -20,7 +125,7 @@ class usuarioControlador
     
     static public function ctrCreacionUsuario(){
 
-        $detalle = new con_db('127.0.0.1','root','','diconspro');
+        $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
 
         $tipo= isset($_REQUEST["tipo"]) ? $_REQUEST["tipo"]:"";
 
@@ -133,7 +238,7 @@ class usuarioControlador
     }
 
     static public function ctrUpdateUsuario(){
-        $detalle = new con_db('127.0.0.1','root','','diconspro');
+        $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
 
         $tipo= isset($_REQUEST["upd_tipo"]) ? $_REQUEST["upd_tipo"]:"";
 
