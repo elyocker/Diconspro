@@ -57,32 +57,44 @@
         $_SESSION['inicio_sesion']  = isset($_SESSION['inicio_sesion']) ? $_SESSION['inicio_sesion']:  '';
         
         if ( $_SESSION['inicio_sesion']!='' && $_SESSION['inicio_sesion']=='ok') {
-            
+
             echo'<div class="wrapper">';   
-            //INICIO::menu de arriba
-                include "vistas/modulos/cabezote.php";
-            //FIN::menu de arriba
+                //INICIO::menu de arriba
+                    include "vistas/modulos/cabezote.php";
+                //FIN::menu de arriba
+                
+                //INICIO::menu lateral
+                    include "vistas/modulos/sidebar.php";
+                //FIN::menu lateral
+                
+                $result = menuControlador::getMenuUrl();
 
-            //INICIO::menu lateral
-                include "vistas/modulos/sidebar.php";
-            //FIN::menu lateral
-
-            //INICIO::conetnido/body
                 $vista = (isset($_GET["vista"])) ? $_GET["vista"] : "";
+                //INICIO::conetnido/body                                
+                
+                    if ($vista !='' ) {
+                        $entro=false;
 
-                if ($vista !='' ) {
-                   
-                    if (in_array($vista,array('usuarios','inicio','salir') )) include "vistas/modulos/".$vista.".php";
-                   
-                }else {
-                    include "vistas/modulos/inicio.php";
-                }
+                        if (in_array($vista,$result)) {
+                            $entro=true;
+                            include "vistas/modulos/".$vista.".php"; 
+                        }
 
-            //FIN::conetnido/body
+                        if ($entro===false ) {                                
+                            $entro=true;
+                            include "vistas/modulos/404.php";
+                        }        
 
-            //INICIO::footer
-                include "vistas/modulos/footer.php";    
-            //FIN::footer
+                    
+                    }else {
+                        include "vistas/modulos/inicio.php";
+                    }
+
+                //FIN::conetnido/body
+
+                //INICIO::footer
+                    include "vistas/modulos/footer.php";    
+                //FIN::footer
             echo'</div>';
         }else {
             include "vistas/modulos/login.php";

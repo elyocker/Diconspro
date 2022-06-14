@@ -24,6 +24,11 @@ class con_db extends mysqli
         $result = $this->query($sql);
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function getDatosArray ($sql=""){
+        $result = $this->query($sql);
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
     
 }
 

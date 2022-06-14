@@ -25,6 +25,15 @@
 
           <div class="card-header">
             <button type="button" class="btn btn-primary" id="btn-nuevo" data-toggle="modal" data-target="#modal_creacion" ><i class="fas fa-plus"></i></button>
+            
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
           </div>
 
           <div class="card-body row">
@@ -121,7 +130,8 @@
     
                         $tabla="roles";
                         $campos="rol_id,rol_nombre";
-                        $result= usuarioControlador::getInput($tabla,$campos);
+                        $where="1=1 AND rol_estado='1'";
+                        $result= usuarioControlador::getInput($tabla,$campos,$where);
                         foreach ($result as $res) {
                           $rol_id = $res['rol_id'];
                           $rol_nombre = $res['rol_nombre'];
@@ -247,7 +257,8 @@
     
                         $tabla="roles";
                         $campos="rol_id,rol_nombre";
-                        $result= usuarioControlador::getInput($tabla,$campos);
+                        $where="1=1 AND rol_estado='1'";
+                        $result= usuarioControlador::getInput($tabla,$campos,$where);
                         foreach ($result as $res) {
                           $rol_id = $res['rol_id'];
                           $rol_nombre = $res['rol_nombre'];

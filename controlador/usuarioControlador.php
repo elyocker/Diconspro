@@ -5,9 +5,7 @@ class usuarioControlador
     static public function ctrLogin(){
 
         global $ipConect,$usuConect,$passConect,$proyeConect;
-
-        include_once "modelo/conexion.php";
-
+        
         $tipo = isset($_REQUEST['tipo'])? $_REQUEST['tipo']: '';
         
         if ($tipo=='login') {
@@ -32,7 +30,7 @@ class usuarioControlador
                             usu_cuenta,
                             usu_pass,
                             usu_estado,
-                            r.rol_nombre as rol,
+                            r.rol_nombre as rol_nombre,
                             CONCAT(usu_nombre, ' ', usu_apellido) AS nombre_usu,
                             usu_foto
                 FROM usuario u
@@ -46,7 +44,7 @@ class usuarioControlador
             $text="";
             if (sizeof($result)) {
                
-                    if ( (password_verify($log_password,$result[0]['usu_pass']))  && $result[0]['usu_cuenta']==$log_usuario) {
+                    if ( (password_verify($log_password,$result[0]['usu_pass']))  && $result[0]['usu_cuenta']===$log_usuario) {
 
                         if ($result[0]['usu_estado']=='1') {
 
@@ -90,18 +88,23 @@ class usuarioControlador
                         $text="La contraseña o usuario son incorrectos";
                     }  
                
-                if ($icon!='') {
-                    echo"<script>
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: '$icon',
-                                title: '$title',
-                                text:  '$text',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });                       
-                    </script>";
-                }
+            }else {
+                $icon="error";
+                $title="¡Lo sentimos!";
+                $text="La contraseña o usuario son incorrectos";
+            }
+
+            if ($icon!='') {
+                echo"<script>
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: '$icon',
+                            title: '$title',
+                            text:  '$text',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });                       
+                </script>";
             }
     
             $detalle->close();
@@ -110,8 +113,7 @@ class usuarioControlador
 
     }
 
-    static public function getInput($tabla="",$campos="",$where="1=1"){
-        include_once "modelo/conexion.php";
+    static public function getInput($tabla="",$campos="",$where="1=1"){        
 
         $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
         $sql  = "SELECT $campos
