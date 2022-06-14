@@ -259,7 +259,7 @@ function getUsuario(codigo) {
         data : {tipo:'update',codigo:codigo},
         dataType : 'json',
         success : function(json) {
-            console.log(json.result[0]['usu_nombre']);
+            console.log(json.result);
             if(json.status=='success'){
                 document.getElementById('upd_nombre').value = json.result[0]['usu_nombre'];
                 document.getElementById('upd_apellido').value = json.result[0]['usu_apellido'];
@@ -269,7 +269,7 @@ function getUsuario(codigo) {
                 document.getElementById('upd_usuario').value = json.result[0]['usu_cuenta'];
                 document.getElementById('upd_tipo').value = "upd";
                 document.getElementById('usu_codigo').value = codigo;
-                document.getElementById("upd_rol").selectedIndex = json.result[0]['usu_rol'];
+                document.getElementById("upd_rol").value = json.result[0]['usu_rol'];
             }
 
             if(json.status=='error'){
