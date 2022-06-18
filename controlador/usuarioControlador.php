@@ -66,10 +66,10 @@ class usuarioControlador
                             $res = $detalle->insert($sql);
                             
                             $_SESSION['inicio_sesion']  ="ok";
-                            $_SESSION['nombreUsuario'] =$result[0]['nombre_usu'];
-                            $_SESSION['urlFoto']       =$result[0]['usu_foto'];
-                            $_SESSION['usuCodigo']     =$result[0]['usu_codigo'];
+                            $_SESSION['usu_codigo']     =$result[0]['usu_codigo'];
                             $_SESSION['logo']          ="img/dashboard/logo.png";
+                            $_SESSION['nombre_usu'] =$result[0]['nombre_usu'];
+                            $_SESSION['usu_foto']       =$result[0]['usu_foto'];
                             $_SESSION['rol']           =$result[0]['rol_nombre'];                            
     
                             if ($res=='ok') {
@@ -341,6 +341,25 @@ class usuarioControlador
             }
 
         }
+
+        $detalle->close();
+    }
+
+    static public function getUsuario($where="1=1"){        
+
+        $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
+        $sql  = "SELECT 
+                    r.rol_nombre as rol_nombre,
+                    CONCAT(usu_nombre, ' ', usu_apellido) AS nombre_usu,
+                    usu_foto
+            FROM usuario u
+            LEFT JOIN roles r ON(r.rol_id=u.usu_rol) 
+            WHERE $where ";        
+        $result = $detalle->getDatos($sql);
+
+        $_SESSION['nombreUsuario'] =$result[0]['nombre_usu'];
+        $_SESSION['urlFoto']       =$result[0]['usu_foto'];
+        $_SESSION['rol']           =$result[0]['rol_nombre'];  
 
         $detalle->close();
     }

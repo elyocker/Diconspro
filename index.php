@@ -5,6 +5,7 @@
     require_once "./controlador/usuarioControlador.php";
     require_once "./controlador/menuControlador.php";
     require_once "./controlador/rolesControlador.php";
+    require_once "./controlador/cotizacionControlador.php";
     
 //FIN::inicio de controladores
 
