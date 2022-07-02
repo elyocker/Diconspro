@@ -33,28 +33,63 @@ function validaCamposCoti(valor) {
 
     if (valor==='aporticado') {
         document.getElementById('div_estud_suelos').style.display='';
+        document.getElementById('estu_suelos').checked=true;
         calcula_cotizacion();
         return;
     }
 }
 
-function evento(event) {
+function validaDato() {
+
+    var arquitectonico  = document.getElementById('arquitectonico').checked;
+    var estructural     = document.getElementById('estructural').checked;
+
+    if (estructural==true && arquitectonico==true) {
+        document.getElementById('div_estud_suelos').style.display='';
+        document.getElementById('aport_confinado').style.display='';
+        calcula_cotizacion();
+        return;
+    }
+
+    if (arquitectonico==true ) {        
+        document.getElementById('aport_confinado').style.display='none';
+        document.getElementById('div_estud_suelos').style.display='';
+        document.getElementById('tot_confinado').value="";
+        document.getElementById('tot_aporticado').value="";       
+        document.getElementById('confinado').checked=false;
+        document.getElementById('aporticado').checked=false;
+        document.getElementById('estu_suelos').checked=false;
+        calcula_cotizacion();
+        return;
+    }
+
+    if (estructural==true) {
+        document.getElementById('aport_confinado').style.display='';
+        document.getElementById('div_estud_suelos').style.display='';
+        // document.getElementById('tot_confinado').value="";
+        // document.getElementById('tot_aporticado').value="";
+        calcula_cotizacion();     
+        return;
+    }
+
+    document.getElementById('div_estud_suelos').style.display='none';
+    document.getElementById('aport_confinado').style.display='none';
+    document.getElementById('tot_confinado').value="";
+    document.getElementById('tot_aporticado').value="";
+    document.getElementById('confinado').checked=false;
+    document.getElementById('aporticado').checked=false;
+    document.getElementById('estu_suelos').checked=false;
+
+}
+
+function evento(event='',accion='') {
 
     if (event.keyCode==13) {
 
-        calcula_cotizacion();        
+        (accion=='cliente') ? getCliente(): calcula_cotizacion();          
 
     }
 }
-
-function valid_check(check,id) {
-    
-    if (!check.checked) {
-        document.getElementById(id).value='';
-    }
-}
-
-
 
 function getValores() {
 
@@ -64,20 +99,73 @@ function getValores() {
         data : {tipo:'valores'},
         dataType : 'json',
         success : function(json) {
-            
+            // console.log(json);
             if(json.status=='success'){
-                document.getElementById('valor_recono').value=json.result[0]['valor_reco'];
-                document.getElementById('valor_obranueva').value=json.result[0]['valor_obranue'];
+                document.getElementById('tot_confinado').value=json.result[0]['valor_confinado'];                
+                document.getElementById('tot_aporticado').value=json.result[0]['valor_aporticado'];                
+                document.getElementById('tot_proyecto').value=json.result[0]['valor_arquite'];
+                document.getElementById('vlr_proyecto').value=json.result[0]['valor_proyecto'];
+
                 document.getElementById('valor_phorizontal').value=json.result[0]['valor_prohori'];
-                document.getElementById('valor_levanarqui').value=json.result[0]['valor_aqui'];
-                document.getElementById('valor_suelos').value=json.result[0]['valor_suelos'];                
+                document.getElementById('valor_levanarqui').value=json.result[0]['valor_levant'];
+                document.getElementById('valor_suelos').value=json.result[0]['valor_suelos'];  
+
+                document.getElementById('valor_tradicion').value=json.result[0]['valor_tradicion'];                
+                document.getElementById('valor_curaduria').value=json.result[0]['valor_curaduria'];                
+                document.getElementById('valor_carta_vecino').value=json.result[0]['valor_vecinos'];      
+
             }
             if(json.status=='error'){
-                document.getElementById('valor_recono').value=0;
-                document.getElementById('valor_obranueva').value=0;
+                
+                document.getElementById('tot_confinado').value=0;                
+                document.getElementById('tot_aporticado').value=0;
+                document.getElementById('tot_proyecto').value=0;
+                document.getElementById('vlr_proyecto').value=0;
+
                 document.getElementById('valor_phorizontal').value=0;
                 document.getElementById('valor_levanarqui').value=0;
                 document.getElementById('valor_suelos').value=0; 
+
+                document.getElementById('valor_tradicion').value=0;                
+                document.getElementById('valor_curaduria').value=0;                
+                document.getElementById('valor_carta_vecino').value=0;
+
+            }
+        }
+    });
+    
+}
+
+function getCliente() {
+    let cedula = document.getElementById('cli_cedula').value;
+    $.ajax({
+        url : 'ajax/ajax_cotizacion.php',
+        type : 'POST',
+        data : {tipo:'cliente',cedula:cedula},
+        dataType : 'json',
+        success : function(json) {
+
+            if(json.status=='success'){
+                document.getElementById('cli_nombre').value             =json.result[0]['cli_nombre'];                
+                document.getElementById('cli_telefono').value           =json.result[0]['cli_telefono'];                
+                document.getElementById('cli_email').value              =json.result[0]['cli_email'];
+                document.getElementById('cli_direccion').value          =json.result[0]['cli_direccion'];
+                document.getElementById('cli_barrio').value             =json.result[0]['cli_barrio'];
+                document.getElementById('departamento').value           =json.result[0]['cli_depart'];
+                document.getElementById('ciudad').innerHTML             =`<option value="${json.result[0]['ciudad']}">${json.result[0]['nombre_ciudad']}</option>`;  
+                document.getElementById('cliente_existe').value         ="true";
+            }
+
+            if(json.status=='error'){    
+                document.getElementById('ciudad').innerHTML                 ="";            
+                document.getElementById('cli_nombre').value                 ='';
+                document.getElementById('cli_telefono').value               ='';
+                document.getElementById('cli_email').value                  ='';
+                document.getElementById('cli_direccion').value              ='';
+                document.getElementById('cli_barrio').value                 ='';
+                document.getElementById('departamento').value               ='';
+                document.getElementById('ciudad').value                     ='';
+                document.getElementById('cliente_existe').value             ="false";
             }
         }
     });
@@ -88,9 +176,8 @@ function calcula_cotizacion() {
     getValores();    
 
     let reconocimiento  = document.getElementById('reconocimiento').checked;
-    let pisos_recon     = document.getElementById('pisos_recon').value;
     let obra_nueva      = document.getElementById('obra_nueva').checked;
-    let pisos_obra      = document.getElementById('pisos_obra').value;
+    let numero_pisos    = document.getElementById('numero_pisos').value;
     let pro_horizon     = document.getElementById('pro_horizon').checked;
     let leva_arqui      = document.getElementById('leva_arqui').checked;
     let estu_suelos     = document.getElementById('estu_suelos').checked;
@@ -98,34 +185,61 @@ function calcula_cotizacion() {
     let metros_m2       = document.getElementById('metros_m2').value;
     let ancho           = document.getElementById('ancho').value;
     let fondo           = document.getElementById('fondo').value;
-
-    let valor_recono        = document.getElementById('valor_recono').value;
-    let valor_obranueva     = document.getElementById('valor_obranueva').value;
+    let descuento       = document.getElementById('descuento').value;
+    
     let valor_phorizontal   = document.getElementById('valor_phorizontal').value;
     let valor_levanarqui    = document.getElementById('valor_levanarqui').value;
     let valor_suelos        = document.getElementById('valor_suelos').value;
-
+  
+    let tot_confinado       = document.getElementById('tot_confinado').value;                
+    let tot_aporticado      = document.getElementById('tot_aporticado').value;
+    let tot_proyecto        = document.getElementById('tot_proyecto').value;
+    let vlr_proyecto        = document.getElementById('vlr_proyecto').value;
+    let arquitectonico      = document.getElementById('arquitectonico').checked;
+    let confinado           = document.getElementById('confinado').checked;
+    let aporticado          = document.getElementById('aporticado').checked;
+    
     let metros_cuadrados=0;
     let sub_valor=0;
     let valor_total=0;
+    let valor_confinado=0;
+    let valor_aporticado=0;
 
     var valido_check=validaCheck(reconocimiento,obra_nueva);
-
+    let proyecto_basico     = 0;
+    let proyecto_compuesto =0;
+    let valor_arqui=0;
+    let valor_phori=0;
     if (valido_check) {    
 
         metros_cuadrados= (medidas == 'ancho - fondo') ? ancho * fondo : metros_m2;
         
-        valor_recon     =(reconocimiento)   ? parseInt(valor_recono)        : 0;
-        valor_obranue   =(obra_nueva)       ? parseInt(valor_obranueva)     : 0;
+        proyecto_basico     =(arquitectonico==true  && numero_pisos==1 ) ? parseInt(vlr_proyecto) :(numero_pisos==1 )? parseInt(vlr_proyecto) : 0;
+        proyecto_compuesto  = (arquitectonico==true && numero_pisos>1) ? parseInt(tot_proyecto) : 0;
+        
+        console.log('tot_aporticado '+tot_aporticado);
+        valor_confinado  =(confinado)        ? parseInt(tot_confinado)           : 0;
+        valor_aporticado =(aporticado)       ? parseInt(tot_aporticado)          : 0;
+
+        // valor_confinado  =(isNaN(valor_confinado.NaN))        ? 0              : valor_confinado;
+        // valor_aporticado =(isNaN(valor_aporticado.NaN) )       ? 0              : valor_aporticado;
         valor_phori     =(pro_horizon)      ? parseInt(valor_phorizontal)   : 0;
         valor_arqui     =(leva_arqui)       ? parseInt(valor_levanarqui)    : 0;
         valor_suelos    =(estu_suelos)      ? parseInt(valor_suelos)        : 0;
     
-        sub_valor = (pisos_recon>0 && reconocimiento==true) ? (metros_cuadrados * pisos_recon):0;
-        sub_valor += (pisos_obra>0 && obra_nueva==true) ? (metros_cuadrados * pisos_obra) :0;
-        valor_total= (sub_valor * (valor_recon+valor_obranue+valor_phori+valor_arqui))+valor_suelos;        
+        sub_valor = (numero_pisos>0 && reconocimiento==true) ? (metros_cuadrados * numero_pisos):0;
+        sub_valor += (numero_pisos>0 && obra_nueva==true) ? (metros_cuadrados * numero_pisos) :0;
+
+        console.log(`(${sub_valor} * (${proyecto_compuesto}+  ${valor_confinado} +  ${valor_phori}+  ${valor_arqui}+  ${valor_aporticado})) + ${valor_suelos} +${proyecto_basico}`);
+               
+        valor_total= (sub_valor * (proyecto_compuesto+valor_confinado+valor_phori+valor_arqui+valor_aporticado))+valor_suelos +proyecto_basico;        
+        
+        if (descuento !='')  { valor_total= (valor_total - (valor_total* (parseInt(descuento) /100) ) ) ;}
+        // console.log(`descuento  ${(valor_total* (parseInt(descuento) /100) )} valor total ${valor_total}`);
     }
     
+    document.getElementById('tot_proyecto').value=proyecto_basico+proyecto_compuesto;
+
     document.getElementById('label_valortot').innerHTML= new Intl.NumberFormat().format(valor_total);
 
     document.getElementById('valor_total').value=valor_total;
@@ -145,23 +259,20 @@ function validaCheck(reconocimiento,obra_nueva) {
             timer: 1500
           }); 
         document.getElementById('obra_nueva').checked=false;
-        document.getElementById('pisos_obra').value='';
         document.getElementById('reconocimiento').checked=false;
-        document.getElementById('pisos_recon').value='';
+        document.getElementById('numero_pisos').value='';
         calcula_cotizacion();
         return false;
     }
 
     if (reconocimiento===true ) {       
         document.getElementById('obra_nueva').checked=false;
-        document.getElementById('pisos_obra').value='';
         return true;
     }
     
     
     if (obra_nueva===true ) {       
         document.getElementById('reconocimiento').checked=false;
-        document.getElementById('pisos_recon').value='';
         return true;
     }
 
@@ -200,6 +311,8 @@ function validaForma(event) {
     let result=false;
     var forma_cotiza= document.getElementById('forma_cotiza');    
 
+    result=valida_tipo();
+    if (!result) return;    
     result= valida_campos('total_medidas','Debes llenar los metro cuadrados');
     if (!result) return;
     result= valida_campos('cli_cedula','El campo cedula es obligatorio');
@@ -238,4 +351,116 @@ function valida_campos(id,msj) {
     }
 
     return true;
+}
+
+function valida_tipo() {
+
+    let reconocimiento = document.getElementById('reconocimiento').checked;
+    let obra_nueva = document.getElementById('obra_nueva').checked;
+    let confinado = document.getElementById('confinado').checked;
+    let aporticado = document.getElementById('aporticado').checked;
+    let estructural = document.getElementById('estructural').checked;
+
+    let entro = true;
+
+    if (!reconocimiento && !obra_nueva) { 
+        Swal.fire({
+            position: 'top-end',
+            icon: 'info',
+            title: `Los campos de reconocimiento o obra nueva son obligatorios`,
+            showConfirmButton: false,
+            timer: 1500
+          });
+        return entro=false;
+    }
+
+    if (estructural) {        
+        if ( !confinado && !aporticado) { 
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: `Los campos de confinado o aporticado son obligatorios`,
+                showConfirmButton: false,
+                timer: 1500
+              });
+            return entro=false;
+        }
+    }
+    
+
+    return entro;
+}
+
+function buscar(tipo) {
+
+    $.ajax({
+        url : 'ajax/ajax_cotizacion.php',
+        type : 'POST',
+        data : {tipo:tipo},
+        dataType : 'json',
+        success : function(json) {
+
+            // console.log(json);
+
+            if(json.status=='success'){
+                llenarTabla(json.result);
+                pluginDataTable('tabla_cotizacion');
+            }
+
+            if(json.status=='error'){
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'info',
+                    title: `No hay registro de cotización`,
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+                      
+                return false ;
+            }
+        }
+    });
+}
+
+$( document ).ready(function() {
+    buscar('buscar');
+    
+});
+
+function pluginDataTable(id) {
+    
+    $(`#${id}`).DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo(`#${id}_wrapper .col-md-6:eq(0)`);
+}
+
+function llenarTabla(result) {
+
+    $("#body_cotiza").empty();
+
+    var btn_delete="danger";
+    var name_delete="Inactivo";
+
+    result.forEach(element => {
+
+        btn_delete=(element.cot_estado==0)? "danger" : "success"; 
+        name_delete=(element.cot_estado==0)? "Inactivo" : "Activo"; 
+
+        var tab ="<tr>";
+        tab +="<td>"+element.cot_nombre+"</td>";
+        tab +="<td>"+element.cot_tipo+"</td>";
+        tab +="<td>"+element.cot_metro2+" m2 </td>";
+        tab +="<td>"+element.cot_cliente +" - "+ element.cli_nombre +"</td>";
+        tab +="<td><a href='vistas/pdf/generados/cotizacion_"+element.cot_nombre+".pdf' download class='btn btn-"+btn_delete+"'>PDF</a></td>";
+        tab +="<td><button type='button' class='btn btn-warning' onclick='pasarProyecto("+element.cot_id+");' >Ejecutar</button></td>";
+        tab +="</tr>";
+    
+        $( "#body_cotiza" ).append(tab);
+    });
+
+}
+
+function pasarProyecto(codigo) {
+    console.log(codigo);
 }

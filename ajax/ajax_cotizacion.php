@@ -22,6 +22,10 @@ switch ($tipo) {
 
     case 'valores':
         valores();
+        break; 
+
+    case 'cliente':
+        cliente();
         break;
         
     default:
@@ -34,10 +38,18 @@ function Buscar(){
     $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
     $where="1=1";
    
-    $sql  = "SELECT r.rol_id,
-                r.rol_nombre ,
-                r.rol_estado 
-            FROM roles r WHERE $where ";  
+    $sql  = "SELECT 
+                cot_id,
+                cot_tipo,
+                cot_metro2,
+                cot_valortot,
+                cot_estado,
+                cot_cliente,
+                c.cli_nombre,
+		        cot_nombre
+            FROM cotizacion 
+            LEFT JOIN cliente c ON (c.cli_cedula=cot_cliente)
+            WHERE  $where ";  
     
     $resp = $detalle->getDatos($sql);
     
@@ -153,6 +165,7 @@ function ciudad(){
 
     echo json_encode($respues);
 }
+
 function valores(){
     $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
 
@@ -161,19 +174,53 @@ function valores(){
     $ano=date('Y');
 
     $sql  = "SELECT 
-    valor_id, 
-    valor_reco,
-    valor_obranue,
-    valor_prohori
-    valor_aqui,
-    valor_suelos,
-    valor_prohori
-    FROM valores_cotizacion 
-    WHERE 1=1 AND valor_ano='$ano'  ";    
+                *
+            FROM valores_cotizacion 
+            WHERE 1=1 AND valor_ano='$ano'  "; 
+
     $result = $detalle->getDatos($sql);
 
-    $detalle->close();
+    $detalle->close();    
+
+    if ($result) {
+        $respues= array(
+            "status"=>"success",
+            "result"=>$result
+        );
+    }else {
+        $respues= array(
+            "status"=>"error",
+            "result"=>"no hay registros"
+        );
+    }
+
+    echo json_encode($respues);
+}
+
+function cliente(){
+    $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
+
+    $cedula     = isset($_REQUEST['cedula'])  ? $_REQUEST['cedula']   : '';
+
+    $result=array(); 
+
+    if ($cedula!='' ) {
+        
+        $sql  = "   SELECT c.cli_nombre,
+                        c.cli_telefono,
+                        c.cli_email,
+                        c.cli_direccion,
+                        c.cli_barrio,
+                        c.cli_depart,
+                        c.cli_ciudad,        
+                        m.municipio AS nombre_ciudad
+                    FROM cliente  c
+                    LEFT JOIN municipios m ON (m.id_municipio=c.cli_ciudad)
+                    WHERE 1=1 AND c.cli_cedula='$cedula' ";    
+        $result = $detalle->getDatos($sql);
     
+        $detalle->close();
+    }
 
 
     if ($result) {
