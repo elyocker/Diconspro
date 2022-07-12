@@ -38,7 +38,7 @@
         </div>
         <div class="card-body">
 
-          <table class="table table-hover table" id="tabla_cotizacion">
+          <table class="table table-hover table-responsive" id="tabla_cotizacion">
 
             <thead>
               <tr>

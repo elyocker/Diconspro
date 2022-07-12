@@ -210,7 +210,7 @@ if ($resul_cli[0]['cot_vecinos']=='true') {
 
     $pdf->Cell(55,0,utf8_decode('Valor cartas vecinos: ') ,0,0,'C');
     $pdf->Cell(186,0 ,'$ '.number_format($vlr_vecinos,0) ,0,0,'C');
-    $pdf->Ln(5);
+    $pdf->Ln(8);
     $total_impuestos+=$vlr_vecinos;
     $mostrar_impuesto=true;
 }
@@ -219,9 +219,9 @@ if ( $resul_cli[0]['cot_lineaparam'] >0) {
 
     $vlr_paramentos =  ($resul_cli[0]['cot_vlrparam']!='')? $resul_cli[0]['cot_vlrparam'] : 17000 ;
 
-    $pdf->Cell(75,0,utf8_decode('Valor Linea de paramentos: ') ,0,0,'C');
-    $pdf->Cell(145,0 ,'$ '.number_format($vlr_paramentos,0) ,0,0,'C');
-    $pdf->Ln(5);
+    $pdf->Cell(68,0,utf8_decode('Valor Linea de paramentos: ') ,0,0,'C');
+    $pdf->Cell(160,0 ,'$ '.number_format($vlr_paramentos,0) ,0,0,'C');
+    $pdf->Ln(8);
     $total_impuestos+=$vlr_paramentos;
     $mostrar_impuesto=true;
 }
