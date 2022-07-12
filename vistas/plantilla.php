@@ -1,10 +1,13 @@
+<?php 
+    session_start();
+ ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>AdminLTE 3 | Blank Page</title>
+        <title> Diconspro | <?php $nom_pes = isset($_GET["vista"]) ? $_GET["vista"] : "inicio"; echo $nom_pes; ?></title>
 
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -47,36 +50,57 @@
         
         <!-- <script src="vistas/dist/js/demo.js"></script> -->
     </head>
-    <body class="hold-transition sidebar-mini">
+    <body class="hold-transition sidebar-mini ">
 
-        <div class="wrapper">        
-            <?php
-            //INICIO::menu de arriba
-                include "vistas/modulos/cabezote.php";
-            //FIN::menu de arriba
+        <?php
+        
+        $_SESSION['inicio_sesion']  = isset($_SESSION['inicio_sesion']) ? $_SESSION['inicio_sesion']:  '';
+        
+        if ( $_SESSION['inicio_sesion']!='' && $_SESSION['inicio_sesion']=='ok') {
 
-            //INICIO::menu lateral
-                include "vistas/modulos/sidebar.php";
-            //FIN::menu lateral
+            echo'<div class="wrapper">';   
+                //INICIO::menu de arriba
+                    include "vistas/modulos/cabezote.php";
+                //FIN::menu de arriba
+                
+                //INICIO::menu lateral
+                    include "vistas/modulos/sidebar.php";
+                //FIN::menu lateral
+                
+                $result = menuControlador::getMenuUrl();
 
-            //INICIO::conetnido/body
                 $vista = (isset($_GET["vista"])) ? $_GET["vista"] : "";
+                //INICIO::conetnido/body                                
+                
+                    if ($vista !='' ) {
+                        $entro=false;
 
-                if ($vista !='' ) {
-                   if (in_array($vista,array('usuarios','inicio') )) {
-                       include "vistas/modulos/".$vista.".php";
-                   }
-                }else {
-                    include "vistas/modulos/inicio.php";
-                }
+                        if (in_array($vista,$result)) {
+                            $entro=true;
+                            include "vistas/modulos/".$vista.".php"; 
+                        }
 
-            //FIN::conetnido/body
+                        if ($entro===false ) {                                
+                            $entro=true;
+                            include "vistas/modulos/404.php";
+                        }        
 
-            //INICIO::footer
-                include "vistas/modulos/footer.php";    
-            //FIN::footer
-            ?>
-        </div>
+                    
+                    }else {
+                        include "vistas/modulos/inicio.php";
+                    }
+
+                //FIN::conetnido/body
+
+                //INICIO::footer
+                    include "vistas/modulos/footer.php";    
+                //FIN::footer
+            echo'</div>';
+        }else {
+            include "vistas/modulos/login.php";
+        }
+
+        ?>
         <!-- ./wrapper -->
 
 

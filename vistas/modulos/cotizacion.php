@@ -6,12 +6,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Bienvenido al Dahsboard</h1>
+            <h1>Cotizaciones</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="inicio">Inicio</a></li>
-              <li class="breadcrumb-item active">Pagina principal</li>
+              <li class="breadcrumb-item active">Cotizaciones</li>
             </ol>
           </div>
         </div>
@@ -26,64 +26,36 @@
         <div class="card-header">
           <button type="button" class="btn btn-primary" id="btn-cotizacion" data-toggle="modal" data-target="#modal_cotizacion" ><i class="fas fa-plus"> Cotización</i></button>
 
+
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
               <i class="fas fa-minus"></i>
             </button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+            <button type="button"  class="btn btn-tool" data-card-widget="remove" title="Remove">
               <i class="fas fa-times"></i>
             </button>
           </div>
         </div>
         <div class="card-body">
-            <div class="row">
-              <!-- inicio de cards -->
-              <div class="col-lg-4 col-6">
-                <div class="small-box bg-info">
 
-                  <div class="inner">
-                    <h3>150</h3>
-                    <p>Cotizaciones</p>
-                  </div>
+          <table class="table table-hover table-responsive" id="tabla_cotizacion">
 
-                  <div class="icon">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <a href="#" class="small-box-footer">Mas informacion... <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-              </div>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Tipo de cotización</th>
+                <th>Medidas en m2</th>
+                <th>Cliente</th>
+                <th>Documento</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
 
-              <div class="col-lg-4 col-6">
-                <div class="small-box bg-success">
-                  
-                  <div class="inner">
-                    <h3>150.000</h3>
-                    <p>Ganancias</p>
-                  </div>
+            <tbody id="body_cotiza" >              
+            </tbody>   
 
-                  <div class="icon">
-                    <i class="fas fa-dollar-sign"></i>
-                  </div>
-                  <a href="#" class="small-box-footer">Mas informacion... <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-              </div>
+          </table>
 
-              <div class="col-lg-4 col-6">
-                <div class="small-box bg-warning">
-                  
-                  <div class="inner">
-                    <h3>1.500.000</h3>
-                    <p>Gastos Mensuales</p>
-                  </div>
-
-                  <div class="icon">
-                    <i class="fas fa-dollar-sign"></i>
-                  </div>
-                  <a href="#" class="small-box-footer">Mas informacion... <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-              </div>
-              <!-- fin de cards -->
-            </div>
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
@@ -456,3 +428,4 @@
       </form>    
   </div>
 </div>
+

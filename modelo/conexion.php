@@ -2,8 +2,7 @@
 
 class con_db extends mysqli
 {
-    public function __construct($host,$usuario,$pass,$nombd)
-    {
+    public function __construct($host,$usuario,$pass,$nombd){
         $this->host=$host;
         $this->usuario=$usuario;
         $this->pass=$pass;
@@ -22,6 +21,11 @@ class con_db extends mysqli
     }
      
     public function getDatos($sql=""){
+        $result = $this->query($sql);
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getDatosArray ($sql=""){
         $result = $this->query($sql);
         return $result->fetch_all(MYSQLI_ASSOC);
     }
