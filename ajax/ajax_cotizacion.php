@@ -37,6 +37,17 @@ function Buscar(){
       
     $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
     $where="1=1";
+
+    $pro_nombre     = isset($_REQUEST['pro_nombre'])? $_REQUEST['pro_nombre']:'';
+    $fecha_ini      = isset($_REQUEST['fecha_ini'])? $_REQUEST['fecha_ini']:'';
+    $fecha_fin      = isset($_REQUEST['fecha_fin'])? $_REQUEST['fecha_fin']:'';
+    $limite         = isset($_REQUEST['limite'])? $_REQUEST['limite']:10;
+
+    $where ="1=1 AND cot_estado='0' ";
+
+    if($pro_nombre!='') $where.=" AND cot_nombre LIKE '%$pro_nombre%' ";
+
+    $where.= ($fecha_ini!='' && $fecha_fin!='') ? " AND cot_fechac BETWEEN '$fecha_ini' AND '$fecha_fin' ": ($fecha_ini!='' ? " AND cot_fechac = '$fecha_ini' ": "" ) ;
    
     $sql  = "SELECT 
                 cot_id,
@@ -49,7 +60,8 @@ function Buscar(){
 		        cot_nombre
             FROM cotizacion 
             LEFT JOIN cliente c ON (c.cli_cedula=cot_cliente)
-            WHERE  $where ";  
+            WHERE  $where 
+            LIMIT $limite";  
     
     $resp = $detalle->getDatos($sql);
     

@@ -21,6 +21,57 @@
     <!-- Main content -->
     <section class="content">
 
+      <div class="card">
+
+        <div class="card-header">
+          <span>Filtros de Busqueda</span> 
+
+          <div class="card-tools">
+          
+            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+        </div>
+
+        <div class="card-body row">
+
+            <div class="form-group col-md-4">
+              <label for="">Nombre:</label>                
+              <input type="text"  class="form-control" id="nombre_pro" name="nombre_pro" >                        
+            </div>            
+
+            <div class="form-group col-md-4">
+              <label for="">Fecha inicio:</label>              
+                <input type="date" class="form-control" id="fecha_ini" name="fecha_ini" >  
+            </div>
+
+            <div class="form-group col-md-4">   
+              <label for="">Fecha fin:</label>             
+              <input type="date" class="form-control" id="fecha_fin" name="fecha_fin"  >                        
+            </div>
+
+            <div class="form-group col-md-2">
+              <label for="">Limite:</label>                
+              <input type="number" min='0' class="form-control" id="limite" name="limite" value="10" >                        
+            </div> 
+
+        </div>
+
+        <div class="card-footer row">
+
+          <div class="col-md-5"></div>
+
+          <div class="col-md-4">
+            <button type="button" class="btn btn-primary" onclick="buscar('buscar')" >Buscar</button>
+            <button type="button" class="btn btn-primary"  onclick="cleanBusqueda()">Limpiar</button>
+          </div>
+
+        </div>
+
+      </div>
+
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
@@ -414,18 +465,221 @@
 
           </div>
 
-          <div class="modal-footer">           
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>  
-            <button type="button" class="btn btn-primary" onclick="validaForma(event);" >Registrar</button>              
-            <?php
-            
-            $ctrCotizacion= new cotizacionControlador();
-            $ctrCotizacion->setCotizacion();
+        </div>
+        <div class="modal-footer">           
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>  
+          <button type="button" class="btn btn-primary" onclick="validaForma(event);" >Registrar</button>              
+          <?php
+          
+          $ctrCotizacion= new cotizacionControlador();
+          $ctrCotizacion->setCotizacion();
 
-            ?>
+          ?>
+        </div>
+      </form>   
+    </div> 
+  </div>
+</div>
+
+<!-- modal de creacion del proyecto -->
+<div class="modal  fade " id="modal_proyecto"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog   modal-lg ">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Creación del Proyecto</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form role="form" method="post" enctype="multipart/form-data" id="forma_proyecto" action="" >
+        <div class="modal-body">
+
+          <div class="card">
+
+            <div class="card-body row">
+              <input type="hidden"  id="tipo_pro" name="tipo_pro" value="proyecto" >
+              <input type="hidden"  id="nombre_archivo" name="nombre_archivo" value="" >
+              <input type="hidden"  id="id_cotizacion" name="id_cotizacion" value="" >
+                
+              <div class="form-group col-md-6">
+                <label for="">Nombre del proyecto:</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-address-card"></i></span>
+                  </div>
+                  <input type="text" class="form-control" id="pro_nombre" name="pro_nombre" require >
+                </div>              
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="">Asignado a:</label> 
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-user" aria-hidden="true"></i></span>
+                  </div>
+                  <select class="form-control" id="pro_usuario" name="pro_usuario" >
+                    <option value="">-</option>
+                    <?php
+                      $usuario= cotizacionControlador::getUsuario();
+                      foreach ($usuario as $usu) {
+                        echo"<option value='".$usu['usu_codigo']."'>".$usu['usu_nombre']."</option>";
+                      }
+                    ?>                      
+                  </select>
+                </div>              
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="">Fecha de estimación:</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar"></i></span>
+                  </div>
+                  <input type="date" class="form-control" id="pro_estimado" name="pro_estimado" require >
+                </div>              
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="">Archivo autocat:</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-file"></i></span>
+                  </div>
+                  <input type="file" class="form-control" id="pro_autocat" name="pro_autocat" require >
+                </div>              
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="">Escritura:</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-file"></i></span>
+                  </div>
+                  <input type="file" class="form-control" id="pro_escritura" name="pro_escritura" require >
+                </div>              
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="">Certificado de tradición:</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-file"></i></span>
+                  </div>
+                  <input type="file" class="form-control" id="pro_certifitradi" name="pro_certifitradi" require >
+                </div>              
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="">Archivo impuesto predial:</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-file"></i></span>
+                  </div>
+                  <input type="file" class="form-control" id="pro_impredial" name="pro_impredial" require >
+                </div>              
+              </div>
+              <div class="form-group col-md-6">
+                <label for="">otro archivo:</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-file"></i></span>
+                  </div>
+                  <input type="file" class="form-control" id="pro_otroarch" name="pro_otroarch" require >
+                </div>              
+              </div>
+
+              
+            </div>
+            
+          </div>
+          
+          <div class="card">
+  
+            <div class="card-header">
+              <h4>Registro fotografíco</h4>
+            </div>
+  
+            <div class="card-body row">
+              <div class="form-group col-md-6">
+                <label for="">Foto 1 :</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-image"></i></span>
+                  </div>
+                  <input type="file" class="form-control" id="pro_foto1" name="pro_foto1" require >
+                </div>              
+              </div>
+  
+              <div class="form-group col-md-6">
+                <label for="">Foto 2 :</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-image"></i></span>
+                  </div>
+                  <input type="file" class="form-control" id="pro_foto2" name="pro_foto2" require >
+                </div>              
+              </div>
+  
+              <div class="form-group col-md-6">
+                <label for="">Foto 3 :</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-image"></i></span>
+                  </div>
+                  <input type="file" class="form-control" id="pro_foto3" name="pro_foto3" require >
+                </div>              
+              </div>
+  
+              <div class="form-group col-md-6">
+                <label for="">Foto 4 :</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-image"></i></span>
+                  </div>
+                  <input type="file" class="form-control" id="pro_foto4" name="pro_foto4" require >
+                </div>              
+              </div>
+  
+              <div class="form-group col-md-6">
+                <label for="">Foto 5 :</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-image"></i></span>
+                  </div>
+                  <input type="file" class="form-control" id="pro_foto5" name="pro_foto5" require >
+                </div>              
+              </div>
+  
+              <div class="form-group col-md-6">
+                <label for="">Foto 6 :</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-image"></i></span>
+                  </div>
+                  <input type="file" class="form-control" id="pro_foto6" name="pro_foto6" require >
+                </div>              
+              </div>
+  
+            </div>
+            
           </div>
         </div>
+
+
+        <div class="modal-footer">           
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>  
+          <button type="button" class="btn btn-primary" onclick="valida_proyecto(event);" >Crear Proyecto</button>              
+          <?php
+          
+            $ctrProyecto= new proyectoControlador();
+            $ctrProyecto->pasarProyecto();
+
+          ?>
+        </div>
       </form>    
+
+    </div>
   </div>
 </div>
 

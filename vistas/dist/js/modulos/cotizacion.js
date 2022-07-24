@@ -336,6 +336,47 @@ function validaForma(event) {
 
 }
 
+function valida_proyecto(event) {
+    event.preventDefault();
+
+    let result=false;
+    var forma_proyecto= document.getElementById('forma_proyecto');  
+
+    if (document.getElementById('pro_foto1').value!='') {        
+        result=valida_archivo('pro_foto1');
+        if (!result) return;
+    }
+    if (document.getElementById('pro_foto2').value!='') {        
+        result=valida_archivo('pro_foto2');
+        if (!result) return;
+    }
+    if (document.getElementById('pro_foto3').value!='') {        
+        result=valida_archivo('pro_foto3');
+        if (!result) return;
+    }
+    if (document.getElementById('pro_foto4').value!='') {        
+        result=valida_archivo('pro_foto4');
+        if (!result) return;
+    }
+    if (document.getElementById('pro_foto5').value!='') {        
+        result=valida_archivo('pro_foto5');
+        if (!result) return;
+    }
+    if (document.getElementById('pro_foto6').value!='') {        
+        result=valida_archivo('pro_foto6');
+        if (!result) return;
+    }
+
+    result= valida_campos('pro_usuario','El campo de asignado no puede estar vacio');
+    if (!result) return;
+
+    result= valida_campos('pro_estimado','La fecha de estmación no puede estar vacio');
+    if (!result) return;
+    
+ 
+    if (result) forma_proyecto.submit();
+}
+
 function valida_campos(id,msj) {
 
     if (document.getElementById(id).value=='') {
@@ -393,18 +434,21 @@ function valida_tipo() {
 
 function buscar(tipo) {
 
+    if( document.getElementById('nombre_pro')) var pro_nombre  = document.getElementById('nombre_pro').value;
+    if( document.getElementById('fecha_ini')) var fecha_ini   = document.getElementById('fecha_ini').value;
+    if( document.getElementById('fecha_fin')) var fecha_fin   = document.getElementById('fecha_fin').value;
+    if( document.getElementById('limite')) var limite      = document.getElementById('limite').value;
+
     $.ajax({
         url : 'ajax/ajax_cotizacion.php',
         type : 'POST',
-        data : {tipo:tipo},
+        data : {tipo:tipo,pro_nombre:pro_nombre,fecha_ini:fecha_ini,fecha_fin:fecha_fin,limite:limite},
         dataType : 'json',
         success : function(json) {
-
             // console.log(json);
-
             if(json.status=='success'){
                 llenarTabla(json.result);
-                pluginDataTable('tabla_cotizacion');
+                
             }
 
             if(json.status=='error'){
@@ -423,8 +467,7 @@ function buscar(tipo) {
 }
 
 $( document ).ready(function() {
-    buscar('buscar');
-    
+    buscar('buscar');    
 });
 
 function pluginDataTable(id) {
@@ -453,7 +496,7 @@ function llenarTabla(result) {
         tab +="<td>"+element.cot_metro2+" m2 </td>";
         tab +="<td>"+element.cot_cliente +" - "+ element.cli_nombre +"</td>";
         tab +="<td><a href='vistas/pdf/generados/cotizacion_"+element.cot_nombre+".pdf' download class='btn btn-"+btn_delete+"'>PDF</a></td>";
-        tab +="<td><button type='button' class='btn btn-warning' onclick='pasarProyecto("+element.cot_id+");' >Ejecutar</button></td>";
+        tab +="<td><button type='button' class='btn btn-warning' data-toggle='modal' data-target='#modal_proyecto' onclick='pasarProyecto("+element.cot_id+",\""+element.cot_nombre+"\",\""+element.cot_cliente+"\");' >Ejecutar</button></td>";
         tab +="</tr>";
     
         $( "#body_cotiza" ).append(tab);
@@ -461,6 +504,37 @@ function llenarTabla(result) {
 
 }
 
-function pasarProyecto(codigo) {
-    console.log(codigo);
+function pasarProyecto(codigo,nombre,cedula) {
+    // alert(nombre);
+    document.getElementById('nombre_archivo').value=cedula;
+    document.getElementById('id_cotizacion').value=codigo;    
+    document.getElementById('pro_nombre').value=nombre;
+    document.getElementById('pro_nombre').readOnly=true;
+}
+
+function valida_archivo(id) {
+
+    var fileInput = document.getElementById(id);
+    var filePath = fileInput.value;
+    var allowedExtensions = /(.jpg|.jpeg|.png|.gif)$/i;
+
+    if(!allowedExtensions.exec(filePath)){
+
+        Swal.fire({
+            icon: 'info',
+            title: `Por favor, los campos con foto cargar con alguna de las extensiones .jpeg/.jpg/.png/`,
+            showConfirmButton: true
+          });
+
+        fileInput.value = '';
+        return false;
+    }
+    return true;
+    
+}
+
+function cleanBusqueda() {
+    document.getElementById('nombre_pro').value='';
+    document.getElementById('fecha_ini').value='';
+    document.getElementById('fecha_fin').value='';
 }

@@ -54,7 +54,7 @@ $pdf->Ln(8);
 $pdf->SetFont('Arial','',12);
 $pdf->Image('vistas/dist/img/marca_agua.jpeg',50,100,120);
 
-$mensaje="A continuación describo la cotización del diseño para reconocimiento y modificación de una vivienda de $pisos pisos con cubierta tradicional de ".$resul_cli[0]['cot_metro2']." m2 aproximadamente ubicado en ".$resul_cli[0]['cli_direccion']." barrio ".$resul_cli[0]['cli_barrio']." de la ciudad de ".$resul_cli[0]['municipio'].", bajo la modalidad de $modalidad 1 piso Adición $pisos piso vivienda ".$resul_cli[0]['cot_tipo'];
+$mensaje="A continuación describo la cotización del diseño para reconocimiento y modificación de una vivienda de $pisos pisos con cubierta tradicional de ".($resul_cli[0]['cot_metro2'] * $pisos)." m2 aproximadamente ubicado en ".$resul_cli[0]['cli_direccion']." barrio ".$resul_cli[0]['cli_barrio']." de la ciudad de ".$resul_cli[0]['municipio'].", bajo la modalidad de $modalidad 1 piso Adición $pisos piso vivienda ".$resul_cli[0]['cot_tipo'];
 
 $pdf->MultiCell(190,5,utf8_decode($mensaje),0,'FJ',0);
 $pdf->Ln(15);
@@ -217,7 +217,7 @@ if ($resul_cli[0]['cot_vecinos']=='true') {
 
 if ( $resul_cli[0]['cot_lineaparam'] >0) { 
 
-    $vlr_paramentos =  ($resul_cli[0]['cot_vlrparam']!='')? $resul_cli[0]['cot_vlrparam'] : 17000 ;
+    $vlr_paramentos =  ($resul_cli[0]['cot_vlrparam']!='')? $resul_cli[0]['cot_vlrparam'] : 0 ;
 
     $pdf->Cell(68,0,utf8_decode('Valor Linea de paramentos: ') ,0,0,'C');
     $pdf->Cell(160,0 ,'$ '.number_format($vlr_paramentos,0) ,0,0,'C');

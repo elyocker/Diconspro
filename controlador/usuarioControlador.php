@@ -36,7 +36,7 @@ class usuarioControlador
                 FROM usuario u
                 LEFT JOIN roles r ON(r.rol_id=u.usu_rol)
                 WHERE $where ";
-
+           
             $result = $detalle->getDatos($sql);
 
             $icon="";
@@ -48,7 +48,7 @@ class usuarioControlador
 
                         if ($result[0]['usu_estado']=='1') {
 
-                            $ip_usuario= isset($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+                            $ip_usuario= isset($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : (isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']);
                             
                             $upd_camp="";
                             if ($ip_usuario!='::1') {
@@ -67,10 +67,10 @@ class usuarioControlador
                             
                             $_SESSION['inicio_sesion']  ="ok";
                             $_SESSION['usu_codigo']     =$result[0]['usu_codigo'];
-                            $_SESSION['logo']          ="img/dashboard/logo.png";
-                            $_SESSION['nombre_usu'] =$result[0]['nombre_usu'];
+                            $_SESSION['logo']           ="img/dashboard/logo.png";
+                            $_SESSION['nombre_usu']     =$result[0]['nombre_usu'];
                             $_SESSION['usu_foto']       =$result[0]['usu_foto'];
-                            $_SESSION['rol']           =$result[0]['rol_nombre'];                            
+                            $_SESSION['rol']            =$result[0]['rol_nombre'];                            
     
                             if ($res=='ok') {
                                 echo '<script>
@@ -348,6 +348,10 @@ class usuarioControlador
     static public function getUsuario($where="1=1"){        
 
         $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
+
+
+        $where.=" AND usu_codigo='".$_SESSION['usu_codigo']."'";
+        
         $sql  = "SELECT 
                     r.rol_nombre as rol_nombre,
                     CONCAT(usu_nombre, ' ', usu_apellido) AS nombre_usu,

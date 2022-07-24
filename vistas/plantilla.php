@@ -14,7 +14,7 @@
         <!-- Font Awesome -->
         <link rel="stylesheet" href="vistas/plugins/fontawesome-free/css/all.min.css">
         <!-- Theme style -->
-        <link rel="stylesheet" href="vistas/dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="vistas/dist/css/adminlte.css">
         <!-- Font Awesome -->
         <link rel="stylesheet" href="vistas/plugins/fontawesome-free/css/all.min.css">
         <!-- SweetAlert2 -->

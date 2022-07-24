@@ -42,8 +42,6 @@ class cotizacionControlador
                 $carta_vecino       = isset($_REQUEST['carta_vecino'])      ? "true"                            : 'false';
                 $cant_vecinos       = isset($_REQUEST['cant_vecinos'])      ? $_REQUEST['cant_vecinos']         : '';
                 $linea_paramentos   = isset($_REQUEST['linea_paramentos'])  ? $_REQUEST['linea_paramentos']     : '';
-                $vlr_linea_parame   = isset($_REQUEST['vlr_linea_parame'])  ? $_REQUEST['vlr_linea_parame']     : '';
-
             //FIN::DOCUMENTACION
 
             //INICIO::datos del cliente
@@ -58,7 +56,14 @@ class cotizacionControlador
                 $departamento       = isset($_REQUEST['departamento'])      ? $_REQUEST['departamento']         : '';
                 $ciudad             = isset($_REQUEST['ciudad'])            ? $_REQUEST['ciudad']               : '';
             //FIN::datos del cliente
-            $aleatorio = mt_rand(100,999);
+
+            $result_paramentos=cotizacionControlador::getVlrParamentos();
+
+            foreach ($result_paramentos as $row) {
+                if ( $linea_paramentos >= $row['vlr_rangoini'] && $linea_paramentos <= $row['vlr_rangofin'] ) $vlr_linea_parame= $row['vlr_valor'] ;
+            }
+           
+            $aleatorio = mt_rand(1000,9999);
             $nombre_proyecto="$aleatorio - INMUEBLE ".strtoupper($cli_nombre);
             $usuarioc=$_SESSION['usu_codigo'];
 
@@ -206,6 +211,17 @@ class cotizacionControlador
         return $result;
     }
 
+    static public function getUsuario(){        
+
+        $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
+
+        $sql="SELECT usu_codigo,usu_nombre FROM usuario where usu_estado='1' ";
+        $result = $detalle->getDatos($sql);
+
+        $detalle->close();
+        return $result;
+    }
+
     static public function getCliente($id=''){    
 
         $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
@@ -259,6 +275,24 @@ class cotizacionControlador
 
         $sql="SELECT *
             FROM valores_cotizacion         
+            WHERE 1=1";
+        $result = $detalle->getDatos($sql);
+        // echo '<pre>';
+        // print_r($result);
+        // echo '</pre>';
+        // die("Termino");
+        $detalle->close();
+        return $result;
+    }
+
+    static public function getVlrParamentos(){    
+
+        $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
+
+        $sql="SELECT    vlr_rangoini,
+                        vlr_rangofin,
+                        (vlr_valor + vlr_estampilla) as vlr_valor                        
+            FROM vlr_paramentos         
             WHERE 1=1";
         $result = $detalle->getDatos($sql);
         // echo '<pre>';

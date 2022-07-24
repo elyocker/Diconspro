@@ -170,20 +170,21 @@
 
               </div>
 
-            </div>
-          </div>
-          <div class="modal-footer">           
-            <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="limpiarModal()">Cerrar</button>  
-            <button type="submit" class="btn btn-primary" onclick="validarCampos(event)" >Guardar</button>              
-            <?php
             
-            $ctrUsuario= new usuarioControlador();
-            $ctrUsuario->ctrCreacionUsuario();
-
-            ?>
           </div>
         </div>
-      </form>    
+        <div class="modal-footer">           
+          <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="limpiarModal()">Cerrar</button>  
+          <button type="submit" class="btn btn-primary" onclick="validarCampos(event)" >Guardar</button>              
+          <?php
+          
+          $ctrUsuario= new usuarioControlador();
+          $ctrUsuario->ctrCreacionUsuario();
+
+          ?>
+        </div>
+      </form> 
+    </div>     
   </div>
 </div>
 
@@ -297,7 +298,7 @@
 
               </div>
 
-            </div>
+            
           </div>
           <div class="modal-footer">           
             <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>  
@@ -310,6 +311,7 @@
             ?>
           </div>
         </div>
-      </form>    
+      </form>  
+    </div>  
   </div>
 </div>
