@@ -141,11 +141,16 @@ function div_modal(dato='',id='',foto='') {
 
     if ( dato !=='' ) {
         document.getElementById(`div_${id}`).style.display='';
-        (foto=='') ? document.getElementById(`${id}_descarga`).href=dato : document.getElementById(`${id}_descarga`).src=`${dato}`   ;        
+        document.getElementById(`${id}_descarga`).href=dato ;
+        if(foto!='') {
+            document.getElementById(`${id}_img`).src=`${dato}`   ;
+            document.getElementById(`btn_${id}`).style.display='';    
+        }    
         document.getElementById(`name_${id}`).value=dato;
         
     }else{
-        document.getElementById(`div_${id}`).style.display='none';     
+        document.getElementById(`div_${id}`).style.display='none';  
+        if(foto!='') document.getElementById(`btn_${id}`).style.display='none';   
         document.getElementById(`name_${id}`).value="";
 
     }

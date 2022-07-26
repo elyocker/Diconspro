@@ -214,10 +214,10 @@
 
                     <div class="btn-group ">
                       <span class="btn btn-primary btn-file">
-                          + <input type="file" name="autocat_new" id="autocat_new">
+                        <i class="fas fa-file-upload"></i><input type="file" name="autocat_new" id="autocat_new">
                       </span>
                       <div id="div_autocat" style="display:none ;">
-                        <a href="#" class="btn btn-success" id="autocat_descarga" download >Descargar</a>
+                        <a href="#" class="btn btn-success fas fa-download" id="autocat_descarga" download ></a>
                         <input type="hidden" name="name_autocat" id="name_autocat">
                       </div>
                     </div>
@@ -233,10 +233,10 @@
 
                   <div class="btn-group">
                     <span class="btn btn-primary btn-file">
-                        + <input type="file" name="escritura_new" id="escritura_new">
+                      <i class="fas fa-file-upload"></i> <input type="file" name="escritura_new" id="escritura_new">
                     </span>
                     <div id="div_escritura" style="display:none ;"> 
-                      <a href="#" class="btn btn-success" id="escritura_descarga" download >Descargar</a>
+                      <a href="#" class="btn btn-success fas fa-download" id="escritura_descarga" download ></a>
                       <input type="hidden" name="name_escritura" id="name_escritura">
                     </div>
                   </div> 
@@ -252,10 +252,10 @@
 
                   <div class="btn-group">
                     <span class="btn btn-primary btn-file">
-                        + <input type="file" name="certifitradi_new" id="certifitradi_new">
+                      <i class="fas fa-file-upload"></i> <input type="file" name="certifitradi_new" id="certifitradi_new">
                     </span>
                     <div id="div_certifitradi" style="display:none ;">
-                      <a href="#" class="btn btn-success" id="certifitradi_descarga" download >Descargar</a>
+                      <a href="#" class="btn btn-success fas fa-download" id="certifitradi_descarga" download ></a>
                       <input type="hidden" name="name_certifitradi" id="name_certifitradi">
                     </div>
                   </div> 
@@ -271,10 +271,10 @@
 
                   <div class="btn-group">
                     <span class="btn btn-primary btn-file">
-                        + <input type="file" name="impredial_new" id="impredial_new">
+                      <i class="fas fa-file-upload"></i> <input type="file" name="impredial_new" id="impredial_new">
                     </span>
                     <div id="div_impredial" style="display:none ;">
-                      <a href="#" class="btn btn-success" id="impredial_descarga" download >Descargar</a>
+                      <a href="#" class="btn btn-success fas fa-download" id="impredial_descarga" download ></a>
                       <input type="hidden" name="name_impredial" id="name_impredial">
                     </div>
                   </div> 
@@ -290,10 +290,10 @@
 
                   <div class="btn-group">
                     <span class="btn btn-primary btn-file">
-                        + <input type="file" name="otroarch_new" id="otroarch_new">
+                      <i class="fas fa-file-upload"></i> <input type="file" name="otroarch_new" id="otroarch_new">
                     </span>
                     <div id="div_otroarch" style="display:none ;">                  
-                      <a href="#" class="btn btn-success" id="otroarch_descarga" download >Descargar</a>
+                      <a href="#" class="btn btn-success fas fa-download" id="otroarch_descarga" download ></a>
                       <input type="hidden" name="name_otroarch" id="name_otroarch">
                     </div>
                   </div> 
@@ -313,94 +313,27 @@
             </div>
   
             <div class="card-body row">
-              <div class="form-group col-md-4">
-                <label for="">Foto 1 :</label>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-image"></i></span>
-                  </div>
-                  <input type="file" class="form-control" id="pro_foto1" name="pro_foto1" require >
-                </div> 
-                            
-                <div class="" id="div_foto1" style="display:none ;">
-                  <img src="#" id="foto1_descarga" class="img-thumbnail previsualizar" width="100px">                  
-                  <input type="hidden" name="name_foto1" id="name_foto1">
-                </div> 
-              </div>
-  
-              <div class="form-group col-md-4">
-                <label for="">Foto 2 :</label>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-image"></i></span>
-                  </div>
-                  <input type="file" class="form-control" id="pro_foto2" name="pro_foto2" require >
-                </div>  
-                <div class="" id="div_foto2" style="display:none ;">
-                  <img src="" id="foto2_descarga" class="img-thumbnail previsualizar" width="100px">
-                  <input type="hidden" name="name_foto2" id="name_foto2">
-                </div> 
-              </div>
-  
-              <div class="form-group col-md-4">
-                <label for="">Foto 3 :</label>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-image"></i></span>
-                  </div>
-                  <input type="file" class="form-control" id="pro_foto3" name="pro_foto3" require >
-                </div>  
-                <div class="" id="div_foto3" style="display:none ;">
-                  <img src="" id="foto3_descarga" class="img-thumbnail previsualizar" width="100px">
-                  <input type="hidden" name="name_foto3" id="name_foto3">
-                </div> 
+              <?php
+              
+                for ($i=1; $i <= 6; $i++) { 
+                  echo'<div class="form-group col-md-4">
+                        <label for="">Foto '.$i.':</label>
+                        <div class="btn-group">
+                          <span class="btn btn-primary btn-file">
+                            <i class="fas fa-file-upload"></i> <input type="file" name="pro_foto'.$i.'" id="pro_foto'.$i.'">
+                          </span>
+                          <div id="btn_foto'.$i.'" style="display:none ;">                  
+                            <a href="#" class="btn btn-success fas fa-download" id="foto'.$i.'_descarga" download ></a>
+                          </div>
+                        </div> 
+                        <div class="" id="div_foto'.$i.'" style="display:none ;">
+                          <img src="#" id="foto'.$i.'_img" class="img-thumbnail previsualizar" width="100px">                  
+                          <input type="hidden" name="name_foto'.$i.'" id="name_foto'.$i.'">
+                        </div>
+                      </div> ';
+                }
 
-              </div>
-  
-              <div class="form-group col-md-4">
-                <label for="">Foto 4 :</label>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-image"></i></span>
-                  </div>
-                  <input type="file" class="form-control" id="pro_foto4" name="pro_foto4" require >
-                </div>  
-                <div class="" id="div_foto4" style="display:none ;">
-                  <img src="" id="foto4_descarga" class="img-thumbnail previsualizar" width="100px">
-                  <input type="hidden" name="name_foto4" id="name_foto4">
-                </div> 
-
-              </div>
-  
-              <div class="form-group col-md-4">
-                <label for="">Foto 5 :</label>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-image"></i></span>
-                  </div>
-                  <input type="file" class="form-control" id="pro_foto5" name="pro_foto5" require >
-                </div>   
-                <div class="" id="div_foto5" style="display:none ;">
-                  <img src="" id="foto5_descarga" class="img-thumbnail previsualizar" width="100px">
-                  <input type="hidden" name="name_foto5" id="name_foto5">
-                </div> 
-
-              </div>
-  
-              <div class="form-group col-md-4">
-                <label for="">Foto 6 :</label>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-image"></i></span>
-                  </div>
-                  <input type="file" class="form-control" id="pro_foto6" name="pro_foto6" require >
-                </div>   
-                <div class="" id="div_foto6" style="display:none ;">
-                  <img src="" id="foto6_descarga" class="img-thumbnail previsualizar" width="100px">
-                  <input type="hidden" name="name_foto6" id="name_foto6">
-                </div> 
-
-              </div>
+              ?>
   
             </div>
             
