@@ -19,7 +19,7 @@ function buscar(tipo) {
         success : function(json) {
             console.log(json);
             if(json.status=='success'){
-                llenarTabla(json.result);
+                llenarTabla(json.result,json.totales);
             }
             if(json.status=='error'){
                 
@@ -28,14 +28,16 @@ function buscar(tipo) {
     });
 }
 
-function llenarTabla(result) {
+function llenarTabla(result,totales) {
+
+    // new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(number)
 
     $("#body_balance").empty();
+    let tot_proveedor =totales['tot_provee'].toLocaleString('es-MX');
+    let tot_ingresos =totales['tot_ingresos'].toLocaleString('es-MX');
+    let tot_valor =totales['tot_valor'].toLocaleString('es-MX');
 
     result.forEach(element => {
-
-        btn_delete=(element.cot_estado==0)? "danger" : "success"; 
-        name_delete=(element.cot_estado==0)? "Inactivo" : "Activo"; 
 
         var tab =`<tr>`;
         tab +=`<td>${element.bal_id}</td>`;
@@ -51,6 +53,31 @@ function llenarTabla(result) {
         tab +=`</tr>`;
     
         $( "#body_balance" ).append(tab);
-    });
 
+    });
+    
+    $("#foot_balance").empty();
+
+    var foote =`<tr>`;
+    
+    foote +=`<td></td>`;
+    foote +=`<td><label>TOTALES</label></td>`;
+    foote +=`<td><label>$ ${tot_proveedor}</label> </td>`;
+    foote +=`<td> <label>$ ${tot_ingresos}</label></td>`;
+    foote +=`<td></td>`;
+    foote +=`<td></td>`;
+    foote +=`<td></td>`;
+    foote +=`<td></td>`;
+    foote +=`<td><label>$ ${tot_valor}</label> </td>`;
+
+    foote +=`</tr>`;
+    $( "#foot_balance" ).append(foote);
+}
+
+
+
+function cleanBalance() {
+    document.getElementById('fecha_fin').value='';
+    document.getElementById('fecha_ini').value='';
+    document.getElementById('bal_nombre').value='';
 }

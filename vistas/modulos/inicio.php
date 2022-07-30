@@ -38,52 +38,43 @@
         </div>
         <div class="card-body">
             <div class="row">
-              <!-- inicio de cards -->
-              <div class="col-lg-4 col-6">
-                <div class="small-box bg-info">
+              <?php
+              
+                if ($_SESSION['rol']=='admin') {
+                    echo'<div class="col-lg-6 col-6">
+                          <div class="small-box bg-success">
+                            
+                            <div class="inner">
+                              <h3 id="h3_ingresos">150.000</h3>
+                              <p>Ganancias</p>
+                            </div>
+          
+                            <div class="icon">
+                              <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <a href="balance" class="small-box-footer">Mas informacion... <i class="fas fa-arrow-circle-right"></i></a>
+                          </div>
+                        </div>
+          
+                        <div class="col-lg-6 col-6">
+                          <div class="small-box bg-warning">
+                            
+                            <div class="inner">
+                              <h3 id="h3_gastos">1.500.000</h3>
+                              <p>Gastos Mensuales</p>
+                            </div>
+          
+                            <div class="icon">
+                              <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <a href="balance" class="small-box-footer">Mas informacion... <i class="fas fa-arrow-circle-right"></i></a>
+                          </div>
+                        </div>';
+                }
 
-                  <div class="inner">
-                    <h3>150</h3>
-                    <p>Cotizaciones</p>
-                  </div>
-
-                  <div class="icon">
-                    <i class="fas fa-user"></i>
-                  </div>
-                  <a href="#" class="small-box-footer">Mas informacion... <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-6">
-                <div class="small-box bg-success">
-                  
-                  <div class="inner">
-                    <h3>150.000</h3>
-                    <p>Ganancias</p>
-                  </div>
-
-                  <div class="icon">
-                    <i class="fas fa-dollar-sign"></i>
-                  </div>
-                  <a href="#" class="small-box-footer">Mas informacion... <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-6">
-                <div class="small-box bg-warning">
-                  
-                  <div class="inner">
-                    <h3>1.500.000</h3>
-                    <p>Gastos Mensuales</p>
-                  </div>
-
-                  <div class="icon">
-                    <i class="fas fa-dollar-sign"></i>
-                  </div>
-                  <a href="#" class="small-box-footer">Mas informacion... <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-              </div>
-              <!-- fin de cards -->
+              ?>
+              
+           
             </div>
         </div>
         <!-- /.card-body -->

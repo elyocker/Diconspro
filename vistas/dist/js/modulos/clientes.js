@@ -74,6 +74,9 @@ function llenarTabla(result) {
     $("#body_cliente").empty();
 
 
+    var rol_login= document.getElementById('rol_login').value;
+
+
     result.forEach(element => {
 
         var tab ="<tr>";
@@ -83,7 +86,8 @@ function llenarTabla(result) {
         tab +="<td>"+element.cli_email+"</td>";
         tab +="<td>"+element.municipio +", "+ element.departamento +"</td>";        
         tab +="<td><button type='button' class='btn btn-warning' data-toggle='modal' data-target='#modal_clientes_upd'  onclick='datoCliente("+element.cli_id+")' ><i class='fas fa-pencil-alt'></i></button>";
-        tab +="<button type='button' class='btn btn-danger' onclick='delete_cliente("+element.cli_id+");' ><i class='fas fa-trash-alt'></i></button>";
+        if (rol_login=='admin') tab +="<button type='button' class='btn btn-danger' onclick='delete_cliente("+element.cli_id+");' ><i class='fas fa-trash-alt'></i></button>";
+        
         tab +="</td></tr>";
     
         $( "#body_cliente" ).append(tab);
@@ -173,7 +177,7 @@ function datoCliente(codigo) {
             }
         },
         error : function(xhr, status) {
-            console.log(xhr);
+            // console.log(xhr);
         }
     });
     

@@ -47,7 +47,7 @@
               $men_menurl = $res['men_menurl'];
               $men_suburl = $res['men_suburl'];
 
-              if ($men_menu !='' && $men_submen=='' && $men_menurl !='' && $men_suburl=='') {
+              if ( $men_menu !='' && $men_submen=='' && $men_menurl !='' && $men_suburl==''  ) {
                   echo' <li class="nav-item">
                         <a href="'.$men_menurl.'" class="nav-link">
                           <i class="nav-icon fas fa-toolbox nav-icon"></i>
@@ -57,32 +57,36 @@
               }
 
               if ($men_menu !='' && $men_submen!='' && $men_menurl =='' && $men_suburl!='' ) {
-                // if ($men_menu != $men_menu) {
-                  echo' <li class="nav-item">
-                          <a href="#" class="nav-link">              
-                            <i class="nav-icon fas fa-toolbox "></i>
-                            <p>
-                              '.$men_menu.'
-                              <i class="right fas fa-angle-left"></i>
-                            </p>
-                          </a>
-                          <ul class="nav nav-treeview">';
-                         
-                            if (strpos($men_submen,',') || $men_submen!='')  {
-                              $sub_menu = explode(',',$men_submen);
-                              $sub_url = explode(',',$men_suburl);                             
+                if($_SESSION['rol']!='admin' &&  in_array($men_menu,array('Finanzas') ) ) continue;
+                
+                    echo' <li class="nav-item">
+                            <a href="#" class="nav-link">              
+                              <i class="nav-icon fas fa-toolbox "></i>
+                              <p>
+                                '.$men_menu.'
+                                <i class="right fas fa-angle-left"></i>
+                              </p>
+                            </a>
+                            <ul class="nav nav-treeview">';
+                          
+                              if (strpos($men_submen,',') || $men_submen!='')  {
+                                $sub_menu = explode(',',$men_submen);
+                                $sub_url = explode(',',$men_suburl);                             
 
-                              for ($i=0; $i < sizeof($sub_menu); $i++) { 
-                                echo'<li class="nav-item">
-                                   <a href="'.$sub_url[$i].'" class="nav-link">
-                                     <i class="fas fa-hammer  nav-icon"></i>
-                                     <p>'.$sub_menu[$i].'</p>
-                                   </a>
-                                 </li>'; 
+                                for ($i=0; $i < sizeof($sub_menu); $i++) { 
+                                  if($_SESSION['rol']!='admin' &&  in_array($sub_menu[$i],array('usuarios','roles') ) ) continue;
+                                    echo'<li class="nav-item">
+                                      <a href="'.$sub_url[$i].'" class="nav-link">
+                                        <i class="fas fa-hammer  nav-icon"></i>
+                                        <p>'.$sub_menu[$i].'</p>
+                                      </a>
+                                    </li>'; 
+                                  
+                                }
                               }
-                            }
-                      echo'</ul>
-                        </li>';
+                        echo'</ul>
+                          </li>';
+                  
                 
               }
               

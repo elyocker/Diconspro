@@ -39,9 +39,7 @@ function Buscar(){
     $fecha_ini      = isset($_REQUEST['fecha_ini'])? $_REQUEST['fecha_ini']:'';
     $fecha_fin      = isset($_REQUEST['fecha_fin'])? $_REQUEST['fecha_fin']:'';
     $limite         = isset($_REQUEST['limite'])? $_REQUEST['limite']:100;
-    
-    $where ="1=1 ";
-
+  
     if($bal_nombre!='') $where.=" AND cot_nombre LIKE '%$bal_nombre%' ";
 
     $where.= ($fecha_ini!='' && $fecha_fin!='') ? " AND bal_fechac BETWEEN '$fecha_ini' AND '$fecha_fin' ": ($fecha_ini!='' ? " AND bal_fechac = '$fecha_ini' ": "" ) ;
@@ -56,7 +54,10 @@ function Buscar(){
                 b.bal_porcentaje,
                 b.bal_cuarenta,
                 u.usu_nombre AS usuario,
-                CONCAT(b.bal_fechac,' ',b.bal_horac) AS fecha
+                CONCAT(b.bal_fechac,' ',b.bal_horac) AS fecha,
+                0 as tot_provee,
+                0 as tot_ingresos,
+                0 as tot_valor
             FROM balance b
             LEFT JOIN cotizacion c ON (c.cot_id=b.bal_cotizacion) 
             LEFT JOIN usuario u ON (u.usu_codigo=b.bal_usuc) 
@@ -65,7 +66,15 @@ function Buscar(){
     
     $resp = $detalle->getDatos($sql);
 
-    for ($i=0; $i < sizeof($resp) ; $i++) { 
+    $tot_provee  =0;
+    $tot_ingresos  =0;
+    $tot_valor  =0;
+
+    for ($i=0; $i < sizeof($resp) ; $i++) {  
+
+        $tot_provee  +=$resp[$i]['bal_proveedor'];
+        $tot_ingresos  +=$resp[$i]['bal_ingresos'];
+        $tot_valor  +=$resp[$i]['bal_total'];
 
         $resp[$i]['bal_proveedor']  =number_format($resp[$i]['bal_proveedor'],0);
         $resp[$i]['bal_ingresos']   =number_format($resp[$i]['bal_ingresos'],0);
@@ -79,12 +88,22 @@ function Buscar(){
     if ($resp!='') {
         $respues= array(
             "status"=>"success",
-            "result"=>$resp
+            "result"=>$resp,
+            "totales"=>array(
+                "tot_provee"=>$tot_provee,
+                "tot_ingresos"=>$tot_ingresos,
+                "tot_valor"=>$tot_valor
+            )
         );
     }else {
         $respues= array(
             "status"=>"error",
-            "result"=>"No hay registros"
+            "result"=>"No hay registros",
+            "totales"=>array(
+                "tot_provee"=>$tot_provee,
+                "tot_ingresos"=>$tot_ingresos,
+                "tot_valor"=>$tot_valor
+            )
         );
     }
 

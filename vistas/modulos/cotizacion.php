@@ -87,9 +87,9 @@
             </button>
           </div>
         </div>
-        <div class="card-body">
+        <div class="card-body table-responsive p-0">
 
-          <table class="table table-hover table-responsive" id="tabla_cotizacion">
+          <table class="table table-hover table-striped " id="tabla_cotizacion">
 
             <thead>
               <tr>

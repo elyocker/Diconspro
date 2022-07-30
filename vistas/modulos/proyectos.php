@@ -122,9 +122,9 @@
             </button>
           </div>
         </div>
-        <div class="card-body">
+        <div class="card-body table-responsive p-0">
 
-          <table class="table table-hover table-responsive" id="table_proyecto">
+          <table class="table table-hover table-striped" id="table_proyecto">
             <thead>
               <tr>
                 <th>Codigo</th>

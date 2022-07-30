@@ -64,8 +64,8 @@
           <div class="row">
             <div class="col-md-5"></div>
             <div class="col-md-4">
-            <button type="button" class="btn btn-primary">Buscar</button>
-              <button type="button" class="btn btn-secundary">Limpiar</button>
+            <button type="button" class="btn btn-primary" onclick="buscar('buscar')">Buscar</button>
+              <button type="button" class="btn btn-secundary" onclick="cleanBalance()">Limpiar</button>
             </div>
           </div>
         </div>
@@ -108,9 +108,13 @@
               </thead>
               <tbody id="body_balance">
               </tbody>
+
+              <tfoot id="foot_balance">                
+              </tfoot>
+
             </table>
           </div>
-                 
+                           
         <!-- /.card-footer-->
       </div>
       <!-- /.card -->

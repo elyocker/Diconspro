@@ -97,13 +97,13 @@ function delete(){
         $respues= array(
             "status"=>"success",
             "title"=>"Excelente",
-            "msj"=>"El rol se elimino correctamente"
+            "msj"=>"El cliente se elimino correctamente"
         );
     }else {
         $respues= array(
             "status"=>"error",
             "title"=>"Lo sentimos",
-            "msj"=>"Hubo un problema al eliminar el rol"
+            "msj"=>"Hubo un problema al eliminar el cliente"
         );
     }
 

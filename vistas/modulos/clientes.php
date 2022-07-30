@@ -2,6 +2,9 @@
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
+
+    <input type="hidden" id="rol_login" value="<?php echo $_SESSION['rol'];?>">
+    
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
