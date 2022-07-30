@@ -57,11 +57,14 @@ function Buscar(){
                 cot_estado,
                 cot_cliente,
                 c.cli_nombre,
-		        cot_nombre
+		        cot_nombre,
+                CONCAT(cot_fechac,' ',cot_horac) as fecha
             FROM cotizacion 
             LEFT JOIN cliente c ON (c.cli_cedula=cot_cliente)
             WHERE  $where 
-            LIMIT $limite";  
+            ORDER BY cot_fechac
+            LIMIT $limite
+            ";  
     
     $resp = $detalle->getDatos($sql);
     

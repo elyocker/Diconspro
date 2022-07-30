@@ -139,9 +139,12 @@ class proyectoControlador
             
             $result = $detalle->insert($sql);
 
+            $result_cot = getDinero($detalle,$id_cotizacion);
+
             $icon="";
             $title="";
             $text="";
+
             if ($result=='ok' ) {
                 $icon="success";
                 $title="Felicitaciones";
@@ -152,6 +155,7 @@ class proyectoControlador
                 $title="Lo sentimos";
                 $text="Hubo un problema al crear el proyecto";
             }
+
             $detalle->close();
 
             if ($icon!='') {
@@ -363,6 +367,130 @@ function delete_archivo($detalle,$tipo,$pro_codigo) {
    if (file_exists($result[0][$tipo])) {
         unlink($result[0][$tipo]);
    }
+}
+
+function getDinero($detalle,$id){
+
+    $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
+    
+    $sql="  SELECT 
+                    c.cot_id,
+                    (c.cot_pisos * cot_metro2) AS metros2,
+                    c.cot_pisos,
+                    c.cot_prophori,
+                    c.cot_arquit,
+                    c.cot_suelos,
+                    c.cot_arquitectonico,
+                    c.cot_estructural,
+                    c.cot_tipocot,
+                    c.cot_valortot,
+                    p.pro_codigo
+            FROM cotizacion c
+            left join proyecto p ON (p.pro_cotizacion=c.cot_id)
+            WHERE cot_id = '$id' ";    
+
+    // echo '<pre>';
+    // print_r($sql);
+    // echo '</pre>';
+    // die("Termino");  
+
+    $resp = $detalle->getDatos($sql);
+
+    $sql="  SELECT  *
+            FROM valores_cotizacion 
+            WHERE 1 = 1 ";      
+
+    $result_vlr = $detalle->getDatos($sql);
+
+    foreach ($resp as $row) {
+
+        $cot_id                 = $row['cot_id'];
+        $metros2                = $row['metros2'];
+        $cot_prophori           = $row['cot_prophori'];
+        $cot_arquit             = $row['cot_arquit'];
+        $cot_suelos             = $row['cot_suelos'];
+        $cot_arquitectonico     = $row['cot_arquitectonico'];
+        $cot_estructural        = $row['cot_estructural'];
+        $cot_tipocot            = $row['cot_tipocot'];
+        $cot_valortot           = $row['cot_valortot'];
+        $pro_codigo           = $row['pro_codigo'];
+
+        $vlr_sesenta=($cot_valortot * 0.6);
+        $vlr_cuarenta=($cot_valortot * 0.4);
+
+        $vlr_propHori = ($cot_prophori =='true') ? (($result_vlr[0]['valor_prohori'] * $metros2) * 0.4) : 0;
+        $vlr_levantArqui = ($cot_arquit =='true') ? (($result_vlr[0]['valor_levant'] * $metros2) * 0.4) : 0;
+        $vlr_estuSuelo = ($cot_suelos =='true') ? ($result_vlr[0]['valor_suelos']  * 0.4) : 0;
+
+        $vlr_arquitectonico = ($cot_arquitectonico !='') ? (($result_vlr[0]['valor_arquite'] * $metros2) * 0.4) : 0;
+        $vlr_aporticado = ($cot_tipocot =='aporticado') ? (($result_vlr[0]['valor_aporticado'] * $metros2) * 0.4) : 0;
+        $vlr_confinado = ($cot_tipocot =='confinado') ? (($result_vlr[0]['valor_confinado'] * $metros2) * 0.4) : 0;
+
+        $resultado = ($vlr_sesenta -$vlr_propHori -$vlr_levantArqui - $vlr_estuSuelo - $vlr_arquitectonico - $vlr_aporticado -$vlr_confinado);
+        $total_proveedor=($vlr_propHori +$vlr_levantArqui + $vlr_estuSuelo + $vlr_arquitectonico  + $vlr_aporticado +$vlr_confinado);
+
+        // echo "vlr_estuSuelo:: $vlr_estuSuelo <BR>\r\n";
+        // echo "vlr_levantArqui:: $vlr_levantArqui <BR>\r\n";
+        // echo "vlr_propHori:: $vlr_propHori <BR>\r\n";
+        // echo "vlr_arquitectonico:: $vlr_arquitectonico <BR>\r\n";
+        // echo "vlr_aporticado:: $vlr_aporticado <BR>\r\n";
+        // echo "vlr_confinado:: $vlr_confinado <BR>\r\n";
+        // echo "---------------------------------------------------------------------------------<BR> \n";
+        // echo "resultado:: $resultado <BR>\r\n";
+        // echo "total_proveedor:: $total_proveedor <BR>\r\n";
+        // die("Termino");
+
+        $usuario_creacion=$_SESSION['usu_codigo'];
+
+        $sql="INSERT INTO balance 
+                (
+                    bal_cotizacion,
+                    bal_proveedor,
+                    bal_ingresos,
+                    bal_usuc,
+                    bal_porcentaje,
+                    bal_total,
+                    bal_sesenta,
+                    bal_cuarenta
+                )
+                VALUES
+                (
+                    '$cot_id',
+                    '$total_proveedor',
+                    '$resultado',
+                    '$usuario_creacion',
+                    '60',
+                    '$cot_valortot',
+                    '$vlr_sesenta',
+                    '$vlr_cuarenta'
+                );
+            ";
+
+        
+        $res= $detalle->insert($sql);
+
+
+        $sql="INSERT INTO vlr_company
+            (
+                vlr_valor,
+                vlr_cotizacion,
+                vlr_proyecto
+            )
+            values
+            (
+                '$resultado',
+                '$cot_id',
+                '$pro_codigo'
+            );";
+            
+        $res= $detalle->insert($sql);
+
+
+    }
+
+    $detalle->close();
+
+    return $resp;
 }
 
 ?>

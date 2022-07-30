@@ -8,7 +8,8 @@
         require_once "./controlador/proyectoControlador.php";
         require_once "./controlador/cotizacionControlador.php";
         require_once "./controlador/clientesControlador.php";
-    
+        require_once "./controlador/balanceControlador.php";
+
     //FIN::inicio de controladores
     
     //INICIO::inicio de modelos

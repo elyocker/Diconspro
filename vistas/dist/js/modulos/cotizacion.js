@@ -79,6 +79,7 @@ function validaDato() {
     document.getElementById('confinado').checked=false;
     document.getElementById('aporticado').checked=false;
     document.getElementById('estu_suelos').checked=false;
+    calcula_cotizacion();
 
 }
 
@@ -210,6 +211,7 @@ function calcula_cotizacion() {
     let proyecto_compuesto =0;
     let valor_arqui=0;
     let valor_phori=0;
+
     if (valido_check) {    
 
         metros_cuadrados= (medidas == 'ancho - fondo') ? ancho * fondo : metros_m2;
@@ -217,7 +219,7 @@ function calcula_cotizacion() {
         proyecto_basico     =(arquitectonico==true  && numero_pisos==1 ) ? parseInt(vlr_proyecto) :(numero_pisos==1 )? parseInt(vlr_proyecto) : 0;
         proyecto_compuesto  = (arquitectonico==true && numero_pisos>1) ? parseInt(tot_proyecto) : 0;
         
-        console.log('tot_aporticado '+tot_aporticado);
+        // console.log('confinado '+confinado);
         valor_confinado  =(confinado)        ? parseInt(tot_confinado)           : 0;
         valor_aporticado =(aporticado)       ? parseInt(tot_aporticado)          : 0;
 
@@ -229,6 +231,7 @@ function calcula_cotizacion() {
     
         sub_valor = (numero_pisos>0 && reconocimiento==true) ? (metros_cuadrados * numero_pisos):0;
         sub_valor += (numero_pisos>0 && obra_nueva==true) ? (metros_cuadrados * numero_pisos) :0;
+        sub_valor += (sub_valor==0 ) ? (metros_cuadrados * numero_pisos) :0;
 
         console.log(`(${sub_valor} * (${proyecto_compuesto}+  ${valor_confinado} +  ${valor_phori}+  ${valor_arqui}+  ${valor_aporticado})) + ${valor_suelos} +${proyecto_basico}`);
                
@@ -331,6 +334,20 @@ function validaForma(event) {
     if (!result)return;
     result= valida_campos('ciudad','El campo municipios es obligatorio');
     if (!result)return;
+
+    if  ( document.getElementById('arquitectonico').checked==false &&  document.getElementById('estructural').checked==false && document.getElementById('pro_horizon').checked==false ) {
+        
+        Swal.fire({
+            position: 'top-end',
+            icon: 'info',
+            title: `Debes seleccionar arquitectonico o estructural`,
+            showConfirmButton: false,
+            timer: 1500
+            });
+                
+        return;
+        
+    }
  
     if (result) forma_cotiza.submit();
 
@@ -401,30 +418,32 @@ function valida_tipo() {
     let confinado = document.getElementById('confinado').checked;
     let aporticado = document.getElementById('aporticado').checked;
     let estructural = document.getElementById('estructural').checked;
+    let pro_horizon = document.getElementById('pro_horizon').checked;
 
     let entro = true;
-
-    if (!reconocimiento && !obra_nueva) { 
-        Swal.fire({
-            position: 'top-end',
-            icon: 'info',
-            title: `Los campos de reconocimiento o obra nueva son obligatorios`,
-            showConfirmButton: false,
-            timer: 1500
-          });
-        return entro=false;
-    }
-
-    if (estructural) {        
-        if ( !confinado && !aporticado) { 
+    if (pro_horizon===false) {        
+        if (!reconocimiento && !obra_nueva) { 
             Swal.fire({
                 position: 'top-end',
                 icon: 'info',
-                title: `Los campos de confinado o aporticado son obligatorios`,
+                title: `Los campos de reconocimiento o obra nueva son obligatorios`,
                 showConfirmButton: false,
                 timer: 1500
               });
             return entro=false;
+        }
+    
+        if (estructural) {        
+            if ( !confinado && !aporticado) { 
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'info',
+                    title: `Los campos de confinado o aporticado son obligatorios`,
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+                return entro=false;
+            }
         }
     }
     
@@ -495,6 +514,7 @@ function llenarTabla(result) {
         tab +="<td>"+element.cot_tipo+"</td>";
         tab +="<td>"+element.cot_metro2+" m2 </td>";
         tab +="<td>"+element.cot_cliente +" - "+ element.cli_nombre +"</td>";
+        tab +="<td>"+element.fecha +"</td>";
         tab +="<td><a href='vistas/pdf/generados/cotizacion_"+element.cot_nombre+".pdf' download class='btn btn-"+btn_delete+"'>PDF</a></td>";
         tab +="<td><button type='button' class='btn btn-warning' data-toggle='modal' data-target='#modal_proyecto' onclick='pasarProyecto("+element.cot_id+",\""+element.cot_nombre+"\",\""+element.cot_cliente+"\");' >Ejecutar</button></td>";
         tab +="</tr>";

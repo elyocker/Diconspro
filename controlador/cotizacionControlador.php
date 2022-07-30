@@ -60,7 +60,7 @@ class cotizacionControlador
             $result_paramentos=cotizacionControlador::getVlrParamentos();
 
             foreach ($result_paramentos as $row) {
-                if ( $linea_paramentos >= $row['vlr_rangoini'] && $linea_paramentos <= $row['vlr_rangofin'] ) $vlr_linea_parame= $row['vlr_valor'] ;
+                $vlr_linea_parame= ( $linea_paramentos >= $row['vlr_rangoini'] && $linea_paramentos <= $row['vlr_rangofin'] ) ? $row['vlr_valor'] : 0;
             }
            
             $aleatorio = mt_rand(1000,9999);
@@ -243,13 +243,14 @@ class cotizacionControlador
                     c.cli_telefono,
                     co.cot_tipo,
                     co.cot_suelos,
+                    co.cot_arquit,
                     co.cot_arquitectonico,
                     co.cot_estructural,
                     co.cot_cantveci,
-                    co.cot_lineaparam,
                     co.cot_vlrparam,
                     co.cot_tipocot,
                     co.cot_nombre,
+                    co.cot_lineaparam,
                     cot_prophori,
                     cot_arquit,
                     concat_ws(' ', u.usu_nombre, u.usu_apellido) as usuario

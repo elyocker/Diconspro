@@ -1,4 +1,5 @@
 <script src="vistas/dist/js/modulos/cotizacion.js"></script>
+<script src="vistas/dist/js/modulos/inicio.js"></script>
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -174,7 +175,7 @@
                   <label for="">Seleciona: </label>
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="tipo_cotiza" id="confinado" value="confinado" 
-                    onclick="validaCamposCoti(this.value);"checked>
+                    onclick="validaCamposCoti(this.value);" >
                     <label class="form-check-label" for="exampleRadios1">
                       Confinado
                     </label>

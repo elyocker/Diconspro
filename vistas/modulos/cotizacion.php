@@ -97,6 +97,7 @@
                 <th>Tipo de cotización</th>
                 <th>Medidas en m2</th>
                 <th>Cliente</th>
+                <th>Fecha</th>
                 <th>Documento</th>
                 <th>Acción</th>
               </tr>
@@ -197,7 +198,7 @@
                   <label for="">Seleciona: </label>
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="tipo_cotiza" id="confinado" value="confinado" 
-                    onclick="validaCamposCoti(this.value);"checked>
+                    onclick="validaCamposCoti(this.value);">
                     <label class="form-check-label" for="exampleRadios1">
                       Confinado
                     </label>

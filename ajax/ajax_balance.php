@@ -32,47 +32,47 @@ switch ($tipo) {
 function Buscar(){       
       
     $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
+
     $where="1=1";
 
-    $pro_nombre     = isset($_REQUEST['pro_nombre'])? $_REQUEST['pro_nombre']:'';
+    $bal_nombre     = isset($_REQUEST['bal_nombre'])? $_REQUEST['bal_nombre']:'';
     $fecha_ini      = isset($_REQUEST['fecha_ini'])? $_REQUEST['fecha_ini']:'';
     $fecha_fin      = isset($_REQUEST['fecha_fin'])? $_REQUEST['fecha_fin']:'';
     $limite         = isset($_REQUEST['limite'])? $_REQUEST['limite']:100;
-    $pro_asignado   = isset($_REQUEST['pro_asignado'])? $_REQUEST['pro_asignado']:'';
-    $pro_estado   = isset($_REQUEST['pro_estado'])? $_REQUEST['pro_estado']:'';    
-    $pro_codigo   = isset($_REQUEST['pro_codigo'])? $_REQUEST['pro_codigo']:'';    
     
     $where ="1=1 ";
 
-    if($pro_nombre!='') $where.=" AND pro_nombre LIKE '%$pro_nombre%' ";
+    if($bal_nombre!='') $where.=" AND cot_nombre LIKE '%$bal_nombre%' ";
 
-    $where.= ($fecha_ini!='' && $fecha_fin!='') ? " AND pro_fechac BETWEEN '$fecha_ini' AND '$fecha_fin' ": ($fecha_ini!='' ? " AND pro_fechac = '$fecha_ini' ": "" ) ;
-
-    $where.=($_SESSION['rol']!='admin') ? " AND p.pro_usuario='".$_SESSION['usu_codigo']."' " :( $pro_asignado !='' ? " AND p.pro_usuario='$pro_asignado' ": "");
-
-    $where.=($pro_estado!='') ? " AND  pro_estado='$pro_estado'" : "";
-    $where.=($pro_codigo!='') ? " AND  pro_codigo='$pro_codigo'" : "";
-
-
+    $where.= ($fecha_ini!='' && $fecha_fin!='') ? " AND bal_fechac BETWEEN '$fecha_ini' AND '$fecha_fin' ": ($fecha_ini!='' ? " AND bal_fechac = '$fecha_ini' ": "" ) ;
 
     $sql  = "SELECT 
-                pro_codigo,
-                pro_nombre,
-                pro_cotizacion,
-                pro_estado,
-                CONCAT(u.usu_nombre, ' ', u.usu_apellido)  as nombre_usuario,
-                pro_estimado,
-                CASE WHEN pro_fechaini is null THEN '-' ELSE pro_fechaini END AS pro_fechaini,
-                CASE WHEN pro_fechafin is null THEN '-' ELSE pro_fechafin END AS pro_fechafin,
-                cl.cli_barrio
-            FROM proyecto p
-            LEFT JOIN usuario u ON (u.usu_codigo=p.pro_usuario)
-            LEFT JOIN cotizacion c ON (c.cot_id=p.pro_cotizacion)
-            LEFT JOIN cliente cl ON (cl.cli_cedula=c.cot_cliente)
+                b.bal_id,
+                c.cot_nombre,
+                b.bal_proveedor,
+                b.bal_ingresos,
+                b.bal_total,
+                b.bal_sesenta,
+                b.bal_porcentaje,
+                b.bal_cuarenta,
+                u.usu_nombre AS usuario,
+                CONCAT(b.bal_fechac,' ',b.bal_horac) AS fecha
+            FROM balance b
+            LEFT JOIN cotizacion c ON (c.cot_id=b.bal_cotizacion) 
+            LEFT JOIN usuario u ON (u.usu_codigo=b.bal_usuc) 
             WHERE  $where
             LIMIT $limite";  
     
     $resp = $detalle->getDatos($sql);
+
+    for ($i=0; $i < sizeof($resp) ; $i++) { 
+
+        $resp[$i]['bal_proveedor']  =number_format($resp[$i]['bal_proveedor'],0);
+        $resp[$i]['bal_ingresos']   =number_format($resp[$i]['bal_ingresos'],0);
+        $resp[$i]['bal_total']      =number_format($resp[$i]['bal_total'],0);
+        $resp[$i]['bal_sesenta']      =number_format($resp[$i]['bal_sesenta'],0);
+        $resp[$i]['bal_cuarenta']      =number_format($resp[$i]['bal_cuarenta'],0);
+    }
     
     $detalle->close();
 
