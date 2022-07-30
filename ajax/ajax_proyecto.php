@@ -70,6 +70,16 @@ function Buscar(){
             LEFT JOIN cotizacion c ON (c.cot_id=p.pro_cotizacion)
             LEFT JOIN cliente cl ON (cl.cli_cedula=c.cot_cliente)
             WHERE  $where
+            GROUP BY  pro_codigo,
+                pro_nombre,
+                pro_cotizacion,
+                pro_estado,
+                u.usu_nombre,  
+			    u.usu_apellido,
+                p.pro_estimado,
+                p.pro_fechaini ,
+                p.pro_fechafin ,
+                cl.cli_barrio
             LIMIT $limite";  
     
     $resp = $detalle->getDatos($sql);
@@ -107,6 +117,7 @@ function editar(){
                         pro_estado,
                         CONCAT(u.usu_nombre, ' ', u.usu_apellido)  as nombre_usuario,
                         u.usu_codigo,
+                        r.rol_nombre as estado_usuario,
                         pro_estimado,
                         pro_fechaini,
                         pro_fechafin,
@@ -126,6 +137,7 @@ function editar(){
                         
                     FROM proyecto p
                     LEFT JOIN usuario u ON (u.usu_codigo=p.pro_usuario)
+                    LEFT JOIN roles r ON (r.rol_id=u.usu_rol)
                     LEFT JOIN cotizacion c ON (c.cot_id=p.pro_cotizacion)
                     LEFT JOIN cliente cl ON (cl.cli_cedula=c.cot_cliente)
                     WHERE  1=1 and pro_codigo='$codigo' "; 

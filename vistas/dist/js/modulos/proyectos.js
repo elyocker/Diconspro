@@ -16,7 +16,7 @@ function buscar(tipo) {
                 pro_asignado:pro_asignado,pro_estado:pro_estado,limite:pro_limite,pro_codigo:pro_codigo},
         dataType : 'json',
         success : function(json) {
-            console.log(json);
+            // console.log(json);
             if(json.status=='success'){
                 llenarTabla(json.result); 
                                
@@ -113,13 +113,15 @@ function detalle_proyecto(codigo) {
                 }
                 document.getElementById('proyecto_estado').value=json.result[0]['pro_estado'];
                
-                if ( json.result[0]['pro_estado']=='2' || json.result[0]['usu_codigo']!=document.getElementById('usuario_login').value) {
+                if ( json.result[0]['pro_estado']=='2' &&  json.result[0]['usu_codigo'] != document.getElementById('usuario_login').value &&  document.getElementById('usuario_rol').value !='admin' )  {
                     document.getElementById('input_descripcion').disabled=true;
                     document.getElementById('btnDescrip').disabled=true;
                     document.getElementById('proyecto_estado').disabled=true;
                     document.getElementById('btn_pro_mdl').disabled=true;
-                    
+                    document.getElementById(`div_descripcion`).style.display='none'; 
                 }else{
+                    document.getElementById(`div_descripcion`).style.display='';  
+                    cargar_descrip();       
                     document.getElementById('input_descripcion').disabled=false;
                     document.getElementById('btnDescrip').disabled=false;
                     document.getElementById('btn_pro_mdl').disabled=false;
@@ -203,7 +205,7 @@ function cargar_descrip() {
         data : {tipo:'getDescrip',codigo:codigo},
         dataType : 'json',
         success : function(json) {
-            console.log(json);
+            // console.log(json);
             if(json.status=='success'){
                 $("#text_descrip").empty();
                

@@ -185,6 +185,8 @@
           <input type="hidden" name="tipo_proyecto" id="tipo_proyecto">
           <input type="hidden" name="nombre_pro" id="nombre_pro">          
           <input type="hidden" name="usuario_login" id="usuario_login" value="<?php echo $_SESSION['usu_codigo']?>">
+          <input type="hidden" name="usuario_rol" id="usuario_rol" value="<?php echo $_SESSION['rol'] ?>">
+
 
           <div class="card">
 
