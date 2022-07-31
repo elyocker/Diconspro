@@ -3,7 +3,7 @@ $( document ).ready(function() {
     dasboard('ganancias');
 });
 
-var entro =false;
+var entro_alert =true;
 function alerta(tipo='') {
 
     $.ajax({
@@ -15,23 +15,24 @@ function alerta(tipo='') {
 
             // console.log(json);
             if(json.status=='success'){
-                entro =true;
                 var res="";
                 json.result.forEach(element => {
                     res+=`<span>${element.mensaje}</span><br />`;
                 });
-
-                Swal.fire({
-                    title: 'Proyectos pendientes!',
-                    html: `${res}`,
-                    icon:'info',
-                    imageWidth: 400,
-                    imageHeight: 200
-                })
+                if (entro_alert==true) {                    
+                    Swal.fire({
+                        title: 'Proyectos pendientes!',
+                        html: `${res}`,
+                        icon:'info',
+                        imageWidth: 400,
+                        imageHeight: 200
+                    })
+                }
+                entro_alert =false;
             }
 
             if(json.status=='error'){
-                entro =false;
+                entro =true;
             }
         }
 

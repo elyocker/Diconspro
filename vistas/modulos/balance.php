@@ -97,12 +97,14 @@
               <tr>
               <th>Id</th>
                 <th>Nombre</th>
+                <th>Excedente</th>
                 <th>Proveedor</th>
                 <th>Ingresos</th>
                 <th>Porcentaje</th>
                 <th>Valor 60%</th>
                 <th>Valor 40%</th>
                 <th>Fecha</th>
+                <th>Estado</th>
                 <th>Valor total</th>
               </tr>
               </thead>

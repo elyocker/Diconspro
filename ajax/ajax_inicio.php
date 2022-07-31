@@ -40,7 +40,7 @@ function ganancias(){
     $fecha_inicio= date('Y-m-01');
 
     $sql  = "SELECT 
-                case when valor_gastos > sum(vlr_valor) then valor_gastos-sum(vlr_valor) else sum(vlr_valor)-valor_gastos END   AS valores,
+                case when valor_gastos > sum(vlr_valor) then 0 else sum(vlr_valor)-valor_gastos END   AS valores,
                 valor_gastos 
             FROM vlr_company , valores_cotizacion
             WHERE vlr_fechac BETWEEN '$fecha_inicio' AND '$fecha_fin' 

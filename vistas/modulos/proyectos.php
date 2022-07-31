@@ -204,7 +204,8 @@
                     <option value="">-</option>
                     <option value="0">Pendiente</option>
                     <option value="1">En proceso</option>
-                    <option value="2">Entregado</option>
+                    <option value="2">Curaduria</option>
+                    <option value="3">Entregado</option>
                   </select>
                 </div>
               </div>

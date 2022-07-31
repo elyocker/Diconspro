@@ -36,19 +36,22 @@ function llenarTabla(result,totales) {
     let tot_proveedor =totales['tot_provee'].toLocaleString('es-MX');
     let tot_ingresos =totales['tot_ingresos'].toLocaleString('es-MX');
     let tot_valor =totales['tot_valor'].toLocaleString('es-MX');
+    let tot_deber =totales['tot_deber'].toLocaleString('es-MX');
 
     result.forEach(element => {
 
         var tab =`<tr>`;
         tab +=`<td>${element.bal_id}</td>`;
         tab +=`<td>${element.cot_nombre}</td>`;
-        tab +=`<td><small class="text-success mr-1"><i class="fas fa-arrow-up"></i> 40% </small> $ ${element.bal_proveedor}</td>`;
-        tab +=`<td><small class="text-success mr-1"><i class="fas fa-arrow-up"></i> 20% </small> $ ${element.bal_ingresos}</td>`;
+        tab +=`<td>$ ${element.bal_deuda}</td>`;
+        tab +=`<td><small class="text-success mr-1"><i class="fas fa-arrow-up"></i> $ </small>  ${element.bal_proveedor}</td>`;
+        tab +=`<td><small class="text-success mr-1"><i class="fas fa-arrow-up"></i> $ </small>  ${element.bal_ingresos}</td>`;
         tab +=`<td><small class="text-success mr-1"><i class="fas fa-arrow-up"></i> ${element.bal_porcentaje}% </small></td>`;
-        tab +=`<td><small class="text-success mr-1"><i class="fas fa-arrow-up"></i>  </small> $ ${element.bal_sesenta}</td>`;
-        tab +=`<td><small class="text-success mr-1"><i class="fas fa-arrow-up"></i>  </small> $ ${element.bal_cuarenta}</td>`;
+        tab +=`<td><small class="text-success mr-1"><i class="fas fa-arrow-up"></i> $ </small>  ${element.bal_sesenta}</td>`;
+        tab +=`<td><small class="text-success mr-1"><i class="fas fa-arrow-up"></i> $ </small>  ${element.bal_cuarenta}</td>`;
         tab +=`<td>${element.fecha}</td>`;
-        tab +=`<td><small class="text-success mr-1"><i class="fas fa-arrow-up"></i> $ ${element.bal_total}</td>`;
+        tab +=`<td>${element.bal_estado}</td>`;
+        tab +=`<td><small class="text-success mr-1"><i class="fas fa-arrow-up"></i> $ </small> ${element.bal_total}</td>`;
     
         tab +=`</tr>`;
     
@@ -62,8 +65,10 @@ function llenarTabla(result,totales) {
     
     foote +=`<td></td>`;
     foote +=`<td><label>TOTALES</label></td>`;
+    foote +=`<td><label>$ ${tot_deber}</label> </td>`;
     foote +=`<td><label>$ ${tot_proveedor}</label> </td>`;
     foote +=`<td> <label>$ ${tot_ingresos}</label></td>`;
+    foote +=`<td></td>`;
     foote +=`<td></td>`;
     foote +=`<td></td>`;
     foote +=`<td></td>`;

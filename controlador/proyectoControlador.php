@@ -308,6 +308,14 @@ class proyectoControlador
                 }
             }
 
+            if($pro_estado=='3'){
+
+                $sql="SELECT pro_cotizacion FROM proyecto WHERE pro_codigo='$codigo_proyecto' ";
+
+                $result = $detalle->getDatos($sql);
+
+                cuadre($detalle,$result[0]['pro_cotizacion']);
+            }
             
             if ($campoUpd!='') {
                 $campoUpd=substr($campoUpd, 1);
@@ -359,7 +367,7 @@ class proyectoControlador
 }
 
 
-function delete_archivo($detalle,$tipo,$pro_codigo) {
+function delete_archivo($detalle,$tipo='',$pro_codigo='') {
 
    $sql="SELECT $tipo FROM proyecto WHERE pro_codigo='$pro_codigo' ";   
    $result = $detalle->getDatos($sql);
@@ -369,7 +377,7 @@ function delete_archivo($detalle,$tipo,$pro_codigo) {
    }
 }
 
-function getDinero($detalle,$id){
+function getDinero($detalle=array(),$id=''){
 
     $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
     
@@ -418,26 +426,243 @@ function getDinero($detalle,$id){
         $vlr_sesenta=($cot_valortot * 0.6);
         $vlr_cuarenta=($cot_valortot * 0.4);
 
-        $vlr_propHori = ($cot_prophori =='true') ? (($result_vlr[0]['valor_prohori'] * $metros2) * 0.4) : 0;
-        $vlr_levantArqui = ($cot_arquit =='true') ? (($result_vlr[0]['valor_levant'] * $metros2) * 0.4) : 0;
-        $vlr_estuSuelo = ($cot_suelos =='true') ? ($result_vlr[0]['valor_suelos']  * 0.4) : 0;
+        if (
+            ($cot_arquitectonico !='' && $cot_prophori =='false' && $cot_arquit =='false' && $cot_suelos =='false' && $cot_tipocot =='') 
+           
+            ) {
+                
+            $total_deuda=0;
+            $resultado=($cot_valortot * 0.6) -(($cot_valortot * 0.6) * 0.52);
+            $total_proveedor=(($cot_valortot * 0.6) * 0.52);
+            // echo "un solo item <BR> \n";
 
-        $vlr_arquitectonico = ($cot_arquitectonico !='') ? (($result_vlr[0]['valor_arquite'] * $metros2) * 0.4) : 0;
-        $vlr_aporticado = ($cot_tipocot =='aporticado') ? (($result_vlr[0]['valor_aporticado'] * $metros2) * 0.4) : 0;
-        $vlr_confinado = ($cot_tipocot =='confinado') ? (($result_vlr[0]['valor_confinado'] * $metros2) * 0.4) : 0;
+        }  elseif (
+            ($cot_arquitectonico =='' && $cot_prophori =='true' && $cot_arquit =='false' && $cot_suelos =='false' && $cot_tipocot =='') ||
+            (($cot_arquitectonico =='' || $cot_arquitectonico !='') && $cot_prophori =='false' && $cot_arquit =='true' && $cot_suelos =='false' && $cot_tipocot =='') ||
+            ($cot_arquitectonico =='' && $cot_prophori =='false' && $cot_arquit =='false' && $cot_suelos =='true' && $cot_tipocot =='') ||
+            ($cot_arquitectonico =='' && $cot_prophori =='false' && $cot_arquit =='false' && $cot_suelos =='false' && $cot_tipocot !='')
+        ) {
 
-        $resultado = ($vlr_sesenta -$vlr_propHori -$vlr_levantArqui - $vlr_estuSuelo - $vlr_arquitectonico - $vlr_aporticado -$vlr_confinado);
-        $total_proveedor=($vlr_propHori +$vlr_levantArqui + $vlr_estuSuelo + $vlr_arquitectonico  + $vlr_aporticado +$vlr_confinado);
+            $total_deuda=0;
+            $resultado=0;
+            $total_proveedor=($cot_valortot * 0.6);
 
-        // echo "vlr_estuSuelo:: $vlr_estuSuelo <BR>\r\n";
-        // echo "vlr_levantArqui:: $vlr_levantArqui <BR>\r\n";
-        // echo "vlr_propHori:: $vlr_propHori <BR>\r\n";
-        // echo "vlr_arquitectonico:: $vlr_arquitectonico <BR>\r\n";
-        // echo "vlr_aporticado:: $vlr_aporticado <BR>\r\n";
-        // echo "vlr_confinado:: $vlr_confinado <BR>\r\n";
+         }   else {
+
+            //INICIO::valores del 60 %
+                $vlr_propHori = ($cot_prophori =='true') ? (($result_vlr[0]['valor_prohori'] * $metros2) * 0.52) : 0;
+                $vlr_levantArqui = ($cot_arquit =='true') ? (($result_vlr[0]['valor_levant'] * $metros2) * 0.52) : 0;
+                $vlr_estuSuelo = ($cot_suelos =='true') ? ($result_vlr[0]['valor_suelos']  * 0.52) : 0;
+    
+                $vlr_arquitectonico = ($cot_arquitectonico !='') ? (($result_vlr[0]['valor_arquite'] * $metros2) * 0.52) : 0;
+                $vlr_aporticado = ($cot_tipocot =='aporticado') ? (($result_vlr[0]['valor_aporticado'] * $metros2) * 0.52) : 0;
+                $vlr_confinado = ($cot_tipocot =='confinado') ? (($result_vlr[0]['valor_confinado'] * $metros2) * 0.52) : 0;
+            //FIN::valores del 60 %
+    
+            //INICIO::valores de lo que se debe a proveedores
+                $vlr_propHori_deuda = ($cot_prophori =='true') ? (($result_vlr[0]['valor_prohori'] * $metros2) * 0.48) : 0;
+                $vlr_levantArqui_deuda = ($cot_arquit =='true') ? (($result_vlr[0]['valor_levant'] * $metros2) * 0.48) : 0;
+                $vlr_estuSuelo_deuda = ($cot_suelos =='true') ? ($result_vlr[0]['valor_suelos']  * 0.48) : 0;
+    
+                $vlr_aporticado_deuda = ($cot_tipocot =='aporticado') ? (($result_vlr[0]['valor_aporticado'] * $metros2) * 0.48) : 0;
+                $vlr_confinado_deuda = ($cot_tipocot =='confinado') ? (($result_vlr[0]['valor_confinado'] * $metros2) * 0.48) : 0;
+
+            //FIN::valores de lo que se debe a proveedores
+
+            $total_deuda=($vlr_propHori_deuda +$vlr_levantArqui_deuda+$vlr_estuSuelo_deuda  + $vlr_confinado_deuda + $vlr_aporticado_deuda);
+            // die("Termino");
+    
+            $resultado = ($vlr_sesenta -$vlr_propHori -$vlr_levantArqui - $vlr_estuSuelo - $vlr_arquitectonico - $vlr_aporticado -$vlr_confinado);
+    
+            $total_proveedor=($vlr_propHori +$vlr_levantArqui + $vlr_estuSuelo + $vlr_arquitectonico  + $vlr_aporticado +$vlr_confinado);
+        }
+
+
+        // echo "vlr_propHori_deuda:: $vlr_propHori_deuda <BR>\r\n";
+        // echo "vlr_levantArqui_deuda:: $vlr_levantArqui_deuda <BR>\r\n";
+        // echo "vlr_estuSuelo_deuda:: $vlr_estuSuelo_deuda <BR>\r\n";
+        // echo "vlr_aporticado_deuda:: $vlr_aporticado_deuda <BR>\r\n";
+        // echo "vlr_confinado_deuda:: $vlr_confinado_deuda <BR>\r\n";
         // echo "---------------------------------------------------------------------------------<BR> \n";
+        // echo "total_deuda:: $total_deuda <BR>\r\n";
         // echo "resultado:: $resultado <BR>\r\n";
+        // die("Termino");
+        
+
+
+        $usuario_creacion=$_SESSION['usu_codigo'];
+
+        $sql="INSERT INTO balance 
+                (
+                    bal_cotizacion,
+                    bal_proveedor,
+                    bal_ingresos,
+                    bal_usuc,
+                    bal_porcentaje,
+                    bal_total,
+                    bal_sesenta,
+                    bal_cuarenta,
+                    bal_deuda,
+                    bal_estado
+                )
+                VALUES
+                (
+                    '$cot_id',
+                    '$total_proveedor',
+                    '$resultado',
+                    '$usuario_creacion',
+                    '60',
+                    '$cot_valortot',
+                    '$vlr_sesenta',
+                    '$vlr_cuarenta',
+                    '$total_deuda',
+                    'Abierto'
+                );
+            ";
+
+        
+        $res= $detalle->insert($sql);
+
+
+        $sql="INSERT INTO vlr_company
+            (
+                vlr_valor,
+                vlr_cotizacion,
+                vlr_proyecto
+            )
+            values
+            (
+                '$resultado',
+                '$cot_id',
+                '$pro_codigo'
+            );";
+            
+        $res= $detalle->insert($sql);
+
+
+    }
+
+    $detalle->close();
+
+    return $resp;
+}
+
+
+function cuadre($detalle=array(),$id=''){
+
+
+    $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
+    
+    $sql="  SELECT 
+                    c.cot_id,
+                    (c.cot_pisos * cot_metro2) AS metros2,
+                    c.cot_pisos,
+                    c.cot_prophori,
+                    c.cot_arquit,
+                    c.cot_suelos,
+                    c.cot_arquitectonico,
+                    c.cot_estructural,
+                    c.cot_tipocot,
+                    c.cot_valortot,
+                    p.pro_codigo
+            FROM cotizacion c
+            left join proyecto p ON (p.pro_cotizacion=c.cot_id)
+            WHERE cot_id = '$id' ";    
+
+    // echo '<pre>';
+    // print_r($sql);
+    // echo '</pre>';
+    // die("Termino");  
+
+    $resp = $detalle->getDatos($sql);
+
+    $sql="  SELECT  *
+            FROM valores_cotizacion 
+            WHERE 1 = 1 ";      
+
+    $result_vlr = $detalle->getDatos($sql);
+
+    foreach ($resp as $row) {
+
+        $cot_id                 = $row['cot_id'];
+        $metros2                = $row['metros2'];
+        $cot_prophori           = $row['cot_prophori'];
+        $cot_arquit             = $row['cot_arquit'];
+        $cot_suelos             = $row['cot_suelos'];
+        $cot_arquitectonico     = $row['cot_arquitectonico'];
+        $cot_tipocot            = $row['cot_tipocot'];
+        $cot_valortot           = $row['cot_valortot'];
+        $pro_codigo           = $row['pro_codigo'];
+
+        $vlr_sesenta=($cot_valortot * 0.6);
+        $vlr_cuarenta=($cot_valortot * 0.4);
+
+        if (
+                ($cot_arquitectonico !='' && $cot_prophori =='false' && $cot_arquit =='false' && $cot_suelos =='false' && $cot_tipocot =='')             
+            ) {
+
+            $total_deuda=0;
+            $resultado=($cot_valortot * 0.4);
+            $total_proveedor=0;
+            // echo "un solo item <BR> \n";
+
+        } elseif (
+                ($cot_arquitectonico =='' && $cot_prophori =='true' && $cot_arquit =='false' && $cot_suelos =='false' && $cot_tipocot =='') ||
+                ( ($cot_arquitectonico =='' || $cot_arquitectonico !='') && $cot_prophori =='false' && $cot_arquit =='true' && $cot_suelos =='false' && $cot_tipocot =='') ||
+                ($cot_arquitectonico =='' && $cot_prophori =='false' && $cot_arquit =='false' && $cot_suelos =='true' && $cot_tipocot =='') ||
+                ($cot_arquitectonico =='' && $cot_prophori =='false' && $cot_arquit =='false' && $cot_suelos =='false' && $cot_tipocot !='')
+            ) {
+
+            $total_deuda=0;
+            $resultado=0;
+            $total_proveedor=($cot_valortot * 0.4);
+
+        } else {
+            // echo "varios item <BR> \n";
+            
+            //INICIO::valores del 60 %
+                $vlr_propHori = ($cot_prophori =='true') ? (($result_vlr[0]['valor_prohori'] * $metros2) * 0.48) : 0;
+                $vlr_levantArqui = ($cot_arquit =='true') ? (($result_vlr[0]['valor_levant'] * $metros2) * 0.48) : 0;
+                $vlr_estuSuelo = ($cot_suelos =='true') ? ($result_vlr[0]['valor_suelos']  * 0.48) : 0;
+    
+               
+                $vlr_aporticado = ($cot_tipocot =='aporticado') ? (($result_vlr[0]['valor_aporticado'] * $metros2) * 0.48) : 0;
+                $vlr_confinado = ($cot_tipocot =='confinado') ? (($result_vlr[0]['valor_confinado'] * $metros2) * 0.48) : 0;
+            //FIN::valores del 60 %
+    
+            //INICIO::valores de lo que se debe a proveedores
+                $vlr_propHori_deuda = ($cot_prophori =='true') ? (($result_vlr[0]['valor_prohori'] * $metros2) * 0.48) : 0;
+                $vlr_levantArqui_deuda = ($cot_arquit =='true') ? (($result_vlr[0]['valor_levant'] * $metros2) * 0.48) : 0;
+                $vlr_estuSuelo_deuda = ($cot_suelos =='true') ? ($result_vlr[0]['valor_suelos']  * 0.48) : 0;
+    
+                $vlr_aporticado_deuda = ($cot_tipocot =='aporticado') ? (($result_vlr[0]['valor_aporticado'] * $metros2) * 0.48) : 0;
+                $vlr_confinado_deuda = ($cot_tipocot =='confinado') ? (($result_vlr[0]['valor_confinado'] * $metros2) * 0.48) : 0;
+            //FIN::valores de lo que se debe a proveedores
+            // echo "vlr_propHori_deuda:: $vlr_propHori_deuda <BR>\r\n";
+            // echo "vlr_levantArqui_deuda:: $vlr_levantArqui_deuda <BR>\r\n";
+            // echo "vlr_estuSuelo_deuda:: $vlr_estuSuelo_deuda <BR>\r\n";
+            // echo "vlr_aporticado_deuda:: $vlr_aporticado_deuda <BR>\r\n";
+            // echo "vlr_confinado_deuda:: $vlr_confinado_deuda <BR>\r\n";
+            // echo "---------------------------------------------------------------------------------<BR> \n";
+            //  echo " vlr_cuarenta:: $ $vlr_cuarenta <BR>\r\n";
+            //  echo "vlr_propHori:: $vlr_propHori <BR>\r\n";
+            // echo "vlr_levantArqui:: $vlr_levantArqui <BR>\r\n";
+            // echo "vlr_estuSuelo:: $vlr_estuSuelo <BR>\r\n";
+            // echo "vlr_aporticado:: $vlr_aporticado <BR>\r\n";
+            // echo "vlr_confinado:: $vlr_confinado <BR>\r\n";
+            $total_deuda=-($vlr_propHori_deuda +$vlr_levantArqui_deuda+$vlr_estuSuelo_deuda  + $vlr_confinado_deuda + $vlr_aporticado_deuda);
+    
+            
+            $resultado = ($vlr_propHori +$vlr_levantArqui + $vlr_estuSuelo  + $vlr_aporticado +$vlr_confinado);
+
+            $resultado=($resultado<0) ?$vlr_cuarenta- (($resultado ) * (-1)) :  $vlr_cuarenta - $resultado;
+            $total_proveedor=($vlr_propHori +$vlr_levantArqui + $vlr_estuSuelo  + $vlr_aporticado +$vlr_confinado);
+        }
+        // echo "resultado:: $resultado <BR>\r\n";        
+
         // echo "total_proveedor:: $total_proveedor <BR>\r\n";
+        // echo "total_deuda:: $total_deuda <BR>\r\n";
+        
         // die("Termino");
 
         $usuario_creacion=$_SESSION['usu_codigo'];
@@ -451,7 +676,9 @@ function getDinero($detalle,$id){
                     bal_porcentaje,
                     bal_total,
                     bal_sesenta,
-                    bal_cuarenta
+                    bal_cuarenta,
+                    bal_deuda,
+                    bal_estado
                 )
                 VALUES
                 (
@@ -459,10 +686,12 @@ function getDinero($detalle,$id){
                     '$total_proveedor',
                     '$resultado',
                     '$usuario_creacion',
-                    '60',
+                    '40',
                     '$cot_valortot',
                     '$vlr_sesenta',
-                    '$vlr_cuarenta'
+                    '$vlr_cuarenta',
+                    '$total_deuda',
+                    'Cerrado'
                 );
             ";
 

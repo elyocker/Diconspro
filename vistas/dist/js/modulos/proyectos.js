@@ -46,13 +46,11 @@ function llenarTabla(result) {
 
     $("#body_proyectos").empty();
 
-    var btn_delete="danger";
-    var name_delete="Inactivo";
 
     result.forEach(element => {
 
-        var estado=(element.pro_estado==0) ? "Pendiente": ( element.pro_estado==1 ? "En proceso": element.pro_estado==2 ? "Entregado" : "" );            
-        var class_estado=(element.pro_estado==0) ? "badge badge-secondary": ( element.pro_estado==1 ? "badge badge-warning": element.pro_estado==2 ? "badge badge-success" : "" );            
+        var estado=(element.pro_estado==0) ? "Pendiente": ( element.pro_estado==1 ? "En proceso": element.pro_estado==2 ? "Curaduria" : element.pro_estado==3 ? "Entregado" : "" );            
+        var class_estado=(element.pro_estado==0) ? "badge badge-secondary": ( element.pro_estado==1 ? "badge badge-warning": element.pro_estado==2 ? "badge badge-success" : element.pro_estado==3 ? "badge badge-success" : "" );            
 
         var tab ="<tr>";
         tab +="<td>"+element.pro_codigo+"</td>";
@@ -103,29 +101,59 @@ function detalle_proyecto(codigo) {
                 div_modal(json.result[0]['pro_foto5'],'foto5','foto');
                 div_modal(json.result[0]['pro_foto6'],'foto6','foto');
                 
-                if ( json.result[0]['pro_estado']!='0' ) {
-                    document.getElementById(`div_descripcion`).style.display='';  
+                if ( json.result[0]['pro_estado']=='0' ) {
+                    document.getElementById(`div_descripcion`).style.display=''; 
+                    document.getElementById('input_descripcion').disabled=false;
+                    document.getElementById('btnDescrip').disabled=false;
+                    document.getElementById('proyecto_estado').disabled=false;
+                    document.getElementById('btn_pro_mdl').disabled=false;  
                     cargar_descrip();                  
                     estado_mdl('proceso');
-                }else{
+                }else if  ( json.result[0]['pro_estado']=='1' ) {
+                    document.getElementById(`div_descripcion`).style.display='';  
+                    document.getElementById('input_descripcion').disabled=false;
+                    document.getElementById('btnDescrip').disabled=false;
+                    document.getElementById('proyecto_estado').disabled=false;
+                    document.getElementById('btn_pro_mdl').disabled=false; 
+                    cargar_descrip();                  
+                    estado_mdl('proceso');
+                }else if  ( json.result[0]['pro_estado']=='2' ) {
+                    document.getElementById(`div_descripcion`).style.display='';  
+                    document.getElementById('input_descripcion').disabled=false;
+                    document.getElementById('btnDescrip').disabled=false;
+                    document.getElementById('proyecto_estado').disabled=false;
+                    document.getElementById('btn_pro_mdl').disabled=false; 
+                    cargar_descrip();                  
+                    estado_mdl('proceso','curaduria');
+
+                } else if ( json.result[0]['pro_estado']=='3' ) {
+
+                    document.getElementById(`div_descripcion`).style.display='';  
+                    document.getElementById('input_descripcion').disabled=true;
+                    document.getElementById('btnDescrip').disabled=true;
+                    document.getElementById('proyecto_estado').disabled=true;
+                    document.getElementById('btn_pro_mdl').disabled=true;
+                    cargar_descrip();                  
                     estado_mdl();
-                    document.getElementById(`div_descripcion`).style.display='none';  
+
+                }else {
+                    estado_mdl();
+                    cargar_descrip(); 
+                    document.getElementById(`div_descripcion`).style.display=''; 
+                    document.getElementById('input_descripcion').disabled=false;
+                    document.getElementById('btnDescrip').disabled=false;
+                    document.getElementById('proyecto_estado').disabled=false;
+                    document.getElementById('btn_pro_mdl').disabled=false; 
                 }
+
                 document.getElementById('proyecto_estado').value=json.result[0]['pro_estado'];
                
-                if ( json.result[0]['pro_estado']=='2' &&  json.result[0]['usu_codigo'] != document.getElementById('usuario_login').value &&  document.getElementById('usuario_rol').value !='admin' )  {
+                if ( json.result[0]['pro_estado']=='3' &&  json.result[0]['usu_codigo'] != document.getElementById('usuario_login').value &&  document.getElementById('usuario_rol').value !='admin' )  {
                     document.getElementById('input_descripcion').disabled=true;
                     document.getElementById('btnDescrip').disabled=true;
                     document.getElementById('proyecto_estado').disabled=true;
                     document.getElementById('btn_pro_mdl').disabled=true;
                     document.getElementById(`div_descripcion`).style.display='none'; 
-                }else{
-                    document.getElementById(`div_descripcion`).style.display='';  
-                    cargar_descrip();       
-                    document.getElementById('input_descripcion').disabled=false;
-                    document.getElementById('btnDescrip').disabled=false;
-                    document.getElementById('btn_pro_mdl').disabled=false;
-                    document.getElementById('proyecto_estado').disabled=false;
                 }
                
             }
@@ -236,14 +264,19 @@ function cargar_descrip() {
     
 }
 
-function estado_mdl(tipo='') {
+function estado_mdl(tipo='',cura='') {
+
     $("#proyecto_estado").empty();
     var table = `<option value="">-</option>`;
     table += (tipo!='')? ``: `<option value="0">Pendiente</option>`;
-    table += `<option value="1">En proceso</option>`;
-    table += `<option value="2">Entregado</option>`;
+    table +=  (cura!='')? `` :`<option value="1">En proceso</option>`;
+    table += `<option value="2">Curaduria</option>`;
+    table += `<option value="3">Entregado</option>`;
     $( "#proyecto_estado" ).append(table);
+
 }
+
+
 
 function cleanFiltros() {
     document.getElementById('pro_codigo').value='';

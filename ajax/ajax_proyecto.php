@@ -267,7 +267,7 @@ function alerta(){
                 CONCAT('Proyecto: ',pro_nombre, ' - Fecha: ', pro_estimado) as mensaje
             FROM proyecto 
             WHERE   pro_estimado <= current_date AND 
-                    pro_estado <> '2' AND 
+                    pro_estado not in ('2','3') AND 
                     pro_usuario='$codigo' 
             ORDER BY pro_estimado ASC"; 
 

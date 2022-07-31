@@ -55,9 +55,8 @@ function Buscar(){
                 b.bal_cuarenta,
                 u.usu_nombre AS usuario,
                 CONCAT(b.bal_fechac,' ',b.bal_horac) AS fecha,
-                0 as tot_provee,
-                0 as tot_ingresos,
-                0 as tot_valor
+                b.bal_deuda ,
+                b.bal_estado
             FROM balance b
             LEFT JOIN cotizacion c ON (c.cot_id=b.bal_cotizacion) 
             LEFT JOIN usuario u ON (u.usu_codigo=b.bal_usuc) 
@@ -69,18 +68,21 @@ function Buscar(){
     $tot_provee  =0;
     $tot_ingresos  =0;
     $tot_valor  =0;
+    $tot_deber  =0;
 
     for ($i=0; $i < sizeof($resp) ; $i++) {  
 
         $tot_provee  +=$resp[$i]['bal_proveedor'];
         $tot_ingresos  +=$resp[$i]['bal_ingresos'];
         $tot_valor  +=$resp[$i]['bal_total'];
+        $tot_deber  +=$resp[$i]['bal_deuda'];
 
-        $resp[$i]['bal_proveedor']  =number_format($resp[$i]['bal_proveedor'],0);
-        $resp[$i]['bal_ingresos']   =number_format($resp[$i]['bal_ingresos'],0);
-        $resp[$i]['bal_total']      =number_format($resp[$i]['bal_total'],0);
-        $resp[$i]['bal_sesenta']      =number_format($resp[$i]['bal_sesenta'],0);
-        $resp[$i]['bal_cuarenta']      =number_format($resp[$i]['bal_cuarenta'],0);
+        $resp[$i]['bal_proveedor']      =number_format($resp[$i]['bal_proveedor'],0);
+        $resp[$i]['bal_ingresos']       =number_format($resp[$i]['bal_ingresos'],0);
+        $resp[$i]['bal_total']          =number_format($resp[$i]['bal_total'],0);
+        $resp[$i]['bal_sesenta']        =number_format($resp[$i]['bal_sesenta'],0);
+        $resp[$i]['bal_cuarenta']       =number_format($resp[$i]['bal_cuarenta'],0);
+        $resp[$i]['bal_deuda']          =number_format($resp[$i]['bal_deuda'],0);
     }
     
     $detalle->close();
@@ -92,7 +94,8 @@ function Buscar(){
             "totales"=>array(
                 "tot_provee"=>$tot_provee,
                 "tot_ingresos"=>$tot_ingresos,
-                "tot_valor"=>$tot_valor
+                "tot_valor"=>$tot_valor ,
+                "tot_deber"=>$tot_deber 
             )
         );
     }else {
@@ -102,7 +105,8 @@ function Buscar(){
             "totales"=>array(
                 "tot_provee"=>$tot_provee,
                 "tot_ingresos"=>$tot_ingresos,
-                "tot_valor"=>$tot_valor
+                "tot_valor"=>$tot_valor,
+                "tot_deber"=>$tot_deber 
             )
         );
     }

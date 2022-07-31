@@ -183,7 +183,7 @@ if (   ( ($resul_cli[0]['cot_recono']=='true' || $resul_cli[0]['cot_obranue']=='
         $resul_cli[0]['cot_prophori']=='false' && 
         $resul_cli[0]['cot_arquit']=='false' &&
         $resul_cli[0]['cot_estructural']=='estructural' &&
-        $resul_cli[0]['cot_arquitectonico']=='')
+        $resul_cli[0]['cot_arquitectonico']=='arquitectonico')
 
         ||
 
