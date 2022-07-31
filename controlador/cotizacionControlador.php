@@ -1,11 +1,16 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 class cotizacionControlador 
 {
     static public function setCotizacion(){        
         $tipo = isset($_REQUEST['tipo']) ? $_REQUEST['tipo'] : '';
 
         if ($tipo=='nuevo') {
+
             // echo '<script>
             //     window.location = "vistas/modulos/pdf_cotizacion.php?tipo=cotizacion&id=2";
             // </script>';
@@ -56,15 +61,15 @@ class cotizacionControlador
                 $departamento       = isset($_REQUEST['departamento'])      ? $_REQUEST['departamento']         : '';
                 $ciudad             = isset($_REQUEST['ciudad'])            ? $_REQUEST['ciudad']               : '';
             //FIN::datos del cliente
-
             $result_paramentos=cotizacionControlador::getVlrParamentos();
-
+            
             foreach ($result_paramentos as $row) {
                 $vlr_linea_parame= ( $linea_paramentos >= $row['vlr_rangoini'] && $linea_paramentos <= $row['vlr_rangofin'] ) ? $row['vlr_valor'] : 0;
             }
-           
+            
             $aleatorio = mt_rand(1000,9999);
             $nombre_proyecto="$aleatorio - INMUEBLE ".strtoupper($cli_nombre);
+           
             $usuarioc=$_SESSION['usu_codigo'];
 
             $sql="INSERT INTO cotizacion 
@@ -168,7 +173,8 @@ class cotizacionControlador
                 # se crea el pdf
                 generarpdf($result[0]['cot_id']);
 
-                #se envia el whatsap
+                #se envia el correo
+                envioCorreo($cli_email,$nombre_proyecto);
                 $icon="success";
                 $title="Felicitaciones";
                 $text="La cotizacion se creo exitosamente";                
@@ -306,4 +312,43 @@ class cotizacionControlador
 
 }
 
+
+function envioCorreo($correo='',$nombre_coti=''){
+
+    if ($correo!=''&& $nombre_coti!='') {        
+        $mail = new PHPMailer(true);
+    
+        try {
+            //Server settings
+            $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+            $mail->isSMTP();                                            //Send using SMTP
+            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $mail->Username   = 'soportediconsprosa@gmail.com';                     //SMTP username
+            $mail->Password   = 'pckgcdghyzdiinvu';                               //SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+    
+            //Recipients
+            $mail->setFrom('soportediconsprosa@gmail.com', 'Soporte Diconspro');
+            $mail->addAddress($correo);  
+    
+            //Attachments
+            
+            $mail->addAttachment('vistas/pdf/generados/cotizacion_'.$nombre_coti.'.pdf');      //Optional name
+    
+            //Content
+            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->Subject = utf8_decode('Envio de cotización');
+            $mail->Body    = '<h3>Gracias por preferirnos</h3>';
+    
+            $mail->send();
+            echo '<script>alert(\'Correo enviado\')</script> ';
+        } catch (Exception $e) {
+            // echo "problemas al enviar el correo Error:: {$mail->ErrorInfo}";
+            die("Termino");
+        }
+    }
+    
+}
 ?>
