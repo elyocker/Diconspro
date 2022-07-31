@@ -72,4 +72,35 @@ function ganancias(){
     echo json_encode($respues);
 }
 
+function alerta(){       
+      
+    $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
+
+    $sql  = "SELECT CONCAT(pro_nombre,' ',pro_estimado) AS mensaje
+            FROM proyecto 
+            WHERE pro_estimado < CURRENT_DATE AND 
+            pro_estado NOT IN ('2','3') ";  
+            
+    $result = $detalle->getDatos($sql);
+
+    
+
+    $detalle->close();
+
+    if ($result!='' ) {
+        $respues= array(
+            "status"=>"success",
+            "mensaje"=>$result
+        );
+    }else {
+        $respues= array(
+            "status"=>"error",
+            "mensaje"=>"No hay registros"
+           
+        );
+    }
+
+    echo json_encode($respues);
+}
+
 ?>

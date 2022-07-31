@@ -427,8 +427,8 @@ function getDinero($detalle=array(),$id=''){
         $vlr_cuarenta=($cot_valortot * 0.4);
 
         if (
+            (($cot_arquitectonico =='' || $cot_arquitectonico !='') && $cot_prophori =='false' && $cot_arquit =='true' && $cot_suelos =='false' && $cot_tipocot =='') ||
             ($cot_arquitectonico !='' && $cot_prophori =='false' && $cot_arquit =='false' && $cot_suelos =='false' && $cot_tipocot =='') 
-           
             ) {
                 
             $total_deuda=0;
@@ -438,7 +438,7 @@ function getDinero($detalle=array(),$id=''){
 
         }  elseif (
             ($cot_arquitectonico =='' && $cot_prophori =='true' && $cot_arquit =='false' && $cot_suelos =='false' && $cot_tipocot =='') ||
-            (($cot_arquitectonico =='' || $cot_arquitectonico !='') && $cot_prophori =='false' && $cot_arquit =='true' && $cot_suelos =='false' && $cot_tipocot =='') ||
+            
             ($cot_arquitectonico =='' && $cot_prophori =='false' && $cot_arquit =='false' && $cot_suelos =='true' && $cot_tipocot =='') ||
             ($cot_arquitectonico =='' && $cot_prophori =='false' && $cot_arquit =='false' && $cot_suelos =='false' && $cot_tipocot !='')
         ) {
@@ -598,7 +598,8 @@ function cuadre($detalle=array(),$id=''){
         $vlr_cuarenta=($cot_valortot * 0.4);
 
         if (
-                ($cot_arquitectonico !='' && $cot_prophori =='false' && $cot_arquit =='false' && $cot_suelos =='false' && $cot_tipocot =='')             
+            (($cot_arquitectonico =='' || $cot_arquitectonico !='') && $cot_prophori =='false' && $cot_arquit =='true' && $cot_suelos =='false' && $cot_tipocot =='') ||
+            ($cot_arquitectonico !='' && $cot_prophori =='false' && $cot_arquit =='false' && $cot_suelos =='false' && $cot_tipocot =='')             
             ) {
 
             $total_deuda=0;
@@ -608,7 +609,6 @@ function cuadre($detalle=array(),$id=''){
 
         } elseif (
                 ($cot_arquitectonico =='' && $cot_prophori =='true' && $cot_arquit =='false' && $cot_suelos =='false' && $cot_tipocot =='') ||
-                ( ($cot_arquitectonico =='' || $cot_arquitectonico !='') && $cot_prophori =='false' && $cot_arquit =='true' && $cot_suelos =='false' && $cot_tipocot =='') ||
                 ($cot_arquitectonico =='' && $cot_prophori =='false' && $cot_arquit =='false' && $cot_suelos =='true' && $cot_tipocot =='') ||
                 ($cot_arquitectonico =='' && $cot_prophori =='false' && $cot_arquit =='false' && $cot_suelos =='false' && $cot_tipocot !='')
             ) {

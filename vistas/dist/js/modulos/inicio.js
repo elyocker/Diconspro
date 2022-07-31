@@ -50,20 +50,22 @@ function dasboard(tipo) {
         data : {tipo:tipo},
         dataType : 'json',
         success : function(json) {
-            console.log(json);
+            // console.log(json);
             if(json.status=='success'){
                 
                 $( "#h3_ingresos" ).append(json.ingresos);
 
                 $( "#h3_gastos" ).append(json.gastos);
 
-                
-
             }
             if(json.status=='error'){
                 document.getElementById('h3_ingresos').value=0;
                 document.getElementById('h3_gastos').value=0;
             }
+        },error : function(xhr, status) {
+            console.log(xhr);
         }
     });
+
+    
 }

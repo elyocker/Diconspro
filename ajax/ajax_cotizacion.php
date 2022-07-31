@@ -62,7 +62,7 @@ function Buscar(){
             FROM cotizacion 
             LEFT JOIN cliente c ON (c.cli_cedula=cot_cliente)
             WHERE  $where 
-            ORDER BY cot_fechac
+            ORDER BY cot_fechac,cot_horac desc
             LIMIT $limite
             ";  
     
