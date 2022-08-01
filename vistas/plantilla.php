@@ -74,6 +74,10 @@
                 
                     if ($vista !='' ) {
                         $entro=false;
+                        if($_SESSION['rol']!='admin' &&  in_array($vista,array('usuarios','roles','precios') ) ) {
+                            include "vistas/modulos/404.php";
+                            $entro=true;
+                        }
 
                         if (in_array($vista,$result)) {
                             $entro=true;

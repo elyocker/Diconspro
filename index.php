@@ -9,6 +9,8 @@
         require_once "./controlador/cotizacionControlador.php";
         require_once "./controlador/clientesControlador.php";
         require_once "./controlador/balanceControlador.php";
+        require_once "./controlador/preciosControlador.php";
+        
 
     //FIN::inicio de controladores
     

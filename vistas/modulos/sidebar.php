@@ -74,7 +74,7 @@
                                 $sub_url = explode(',',$men_suburl);                             
 
                                 for ($i=0; $i < sizeof($sub_menu); $i++) { 
-                                  if($_SESSION['rol']!='admin' &&  in_array($sub_menu[$i],array('usuarios','roles') ) ) continue;
+                                  if($_SESSION['rol']!='admin' &&  in_array($sub_menu[$i],array('usuarios','roles','precios') ) ) continue;
                                     echo'<li class="nav-item">
                                       <a href="'.$sub_url[$i].'" class="nav-link">
                                         <i class="fas fa-hammer  nav-icon"></i>
