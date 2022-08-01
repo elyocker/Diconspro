@@ -33,9 +33,8 @@ function ganancias(){
       
     $detalle = new con_db( $_SESSION['ipConect'], $_SESSION['usuConect'],$_SESSION['passConect'], $_SESSION['proyeConect']);
 
-    $year= date('Y');
-
-    
+    $year= date('Y-md');
+ 
     $fecha_fin=  date("Y-m-t", strtotime(date('Y-m-d')));
     $fecha_inicio= date('Y-m-01');
 
@@ -45,7 +44,7 @@ function ganancias(){
             FROM vlr_company , valores_cotizacion
             WHERE vlr_fechac BETWEEN '$fecha_inicio' AND '$fecha_fin' 
             AND valor_ano ='$year' ";  
-            
+ 
     $resp_ingresos = $detalle->getDatos($sql);
 
     for ($i=0; $i < sizeof($resp_ingresos); $i++) { 

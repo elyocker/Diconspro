@@ -340,7 +340,8 @@ function envioCorreo($correo='',$nombre_coti=''){
             //Content
             $mail->isHTML(true);                                  //Set email format to HTML
             $mail->Subject = utf8_decode('Envio de cotización');
-            $mail->Body    = '<h3>Gracias por preferirnos</h3>';
+            $mail->Body    = '<h3>Gracias por preferirnos</h3>
+                                <p>Codigo: '.$nombre_coti.', puedes consultar en  <a href=\'#\'>Pagina</a> </p>';
     
             $mail->send();
             echo '<script>alert(\'Correo enviado\')</script> ';

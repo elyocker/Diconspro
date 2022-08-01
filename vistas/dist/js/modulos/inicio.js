@@ -10,7 +10,7 @@ function alerta(tipo='') {
         url : 'ajax/ajax_proyecto.php',
         type : 'POST',
         data : {tipo:tipo},
-        dataType : 'json',
+        dataType : '',
         success : function(json) {
 
             // console.log(json);
