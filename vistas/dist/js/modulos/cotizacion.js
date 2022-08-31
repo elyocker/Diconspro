@@ -197,6 +197,7 @@ function calcula_cotizacion() {
     let tot_proyecto        = document.getElementById('tot_proyecto').value;
     let vlr_proyecto        = document.getElementById('vlr_proyecto').value;
     let arquitectonico      = document.getElementById('arquitectonico').checked;
+    let estructural      = document.getElementById('estructural').checked;
     let confinado           = document.getElementById('confinado').checked;
     let aporticado          = document.getElementById('aporticado').checked;
     
@@ -216,7 +217,7 @@ function calcula_cotizacion() {
 
         metros_cuadrados= (medidas == 'ancho - fondo') ? ancho * fondo : metros_m2;
         
-        proyecto_basico     =(arquitectonico==true  && numero_pisos==1 ) ? parseInt(vlr_proyecto) :(numero_pisos==1 )? parseInt(vlr_proyecto) : 0;
+        proyecto_basico     =((arquitectonico==true  && numero_pisos==1 ) || (estructural==true  && numero_pisos==1) || (estructural==true  && numero_pisos==1 && arquitectonico==true) ) ? parseInt(vlr_proyecto) : 0;
         proyecto_compuesto  = (arquitectonico==true && numero_pisos>1) ? parseInt(tot_proyecto) : 0;
         
         // console.log('confinado '+confinado);

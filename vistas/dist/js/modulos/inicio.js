@@ -50,7 +50,7 @@ function dasboard(tipo) {
         data : {tipo:tipo},
         dataType : 'json',
         success : function(json) {
-            // console.log(json);
+            //console.log(json);
             if(json.status=='success'){
                 
                 $( "#h3_ingresos" ).append(json.ingresos);

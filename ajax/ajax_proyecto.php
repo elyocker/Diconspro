@@ -48,11 +48,10 @@ function Buscar(){
 
     $where.= ($fecha_ini!='' && $fecha_fin!='') ? " AND pro_fechac BETWEEN '$fecha_ini' AND '$fecha_fin' ": ($fecha_ini!='' ? " AND pro_fechac = '$fecha_ini' ": "" ) ;
 
-    $where.=($_SESSION['rol']!='admin') ? " AND p.pro_usuario='".$_SESSION['usu_codigo']."' " :( $pro_asignado !='' ? " AND p.pro_usuario='$pro_asignado' ": "");
+    $where.=($_SESSION['rol']!='admin' && $_SESSION['rol'] !='Secretaria') ? " AND p.pro_usuario='".$_SESSION['usu_codigo']."' " :( $pro_asignado !='' ? " AND p.pro_usuario='$pro_asignado' ": "");
 
     $where.=($pro_estado!='') ? " AND  pro_estado='$pro_estado'" : "";
     $where.=($pro_codigo!='') ? " AND  pro_codigo='$pro_codigo'" : "";
-
 
 
     $sql  = "SELECT 
@@ -81,6 +80,9 @@ function Buscar(){
                 p.pro_fechafin ,
                 cl.cli_barrio
             LIMIT $limite";  
+            // echo '<pre>';
+            // print_r($sql);
+            // echo '</pre>';
     
     $resp = $detalle->getDatos($sql);
     

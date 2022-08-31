@@ -49,7 +49,7 @@
 
             <?php
 
-              if ($_SESSION['rol']=='admin') {
+              if (in_array($_SESSION['rol'],array('Secretaria','admin')) ) {
                 echo'<div class="form-group col-md-4">
                   <label for="">Asignado:</label>    
                     <select class="form-control" id="pro_asignado" name="pro_asignado">
@@ -135,6 +135,7 @@
                 <th>Fecha inicio</th>
                 <th>Fecha fin</th>
                 <th>Estado</th>
+                <th>Cotización</th>
                 <th>Acción</th>
               </tr>
             </thead>

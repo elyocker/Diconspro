@@ -39,12 +39,12 @@ function buscar(){
                     
                     CONCAT(cl.cli_direccion,' ',m.municipio,', ',d.departamento) AS direccion
                     
-                FROM proyecto P
+                FROM proyecto p
                 LEFT JOIN cotizacion c ON (c.cot_id=p.pro_cotizacion)
                 LEFT JOIN cliente cl ON (cl.cli_cedula=c.cot_cliente)
                 LEFT JOIN municipios m ON (m.id_municipio =cl.cli_ciudad)
                 LEFT JOIN departamentos d ON (d.id_departamento =cl.cli_depart)
-                WHERE 1=1 and p.pro_nombre LIKE '%$nombre%' ";  
+                WHERE 1=1 and p.pro_nombre LIKE '%$nombre%' and pro_estado<>'3'";  
                 
         $result = $detalle->getDatos($sql);
     }

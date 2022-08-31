@@ -61,6 +61,7 @@ function llenarTabla(result) {
         tab +="<td>"+element.pro_fechaini +"</td>";
         tab +="<td>"+element.pro_fechafin +"</td>";
         tab +="<td><span class='"+class_estado+"'>"+estado+"</span></td>";
+        tab +="<td> <a href='vistas/pdf/generados/cotizacion_"+element.pro_nombre+".pdf' Target='_blank' class='btn btn-danger'  >PDF</a></td>";
         tab +="<td> <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#modal_proyecto' onclick='detalle_proyecto(\""+element.pro_codigo+"\")' >Detalle</button></td>";
         tab +="</tr>";
     

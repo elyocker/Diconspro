@@ -26,86 +26,86 @@ class proyectoControlador
             $campoInsert="";
             $valueInsert="";
             if ($_FILES["pro_autocat"]["tmp_name"]!='' ) {
-                echo '<pre>';
-                print_r($_FILES["pro_autocat"]["name"]);
-                echo '</pre>';
-                $extension =   explode('.',$_FILES["pro_autocat"]["name"]);
-                $nombre_archivo= "autocat.".$extension[1];
+               
+                $extension = pathinfo($_FILES["pro_autocat"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "autocat.".$extension;
                 move_uploaded_file($_FILES["pro_autocat"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoInsert.=",pro_autocat";
                 $valueInsert.=",'$new_dire/$nombre_archivo'";
             }
 
             if ($_FILES["pro_escritura"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_escritura"]["name"]);
-                $nombre_archivo= "escritura.".$extension[1];
+                $extension = pathinfo($_FILES["pro_escritura"]["name"], PATHINFO_EXTENSION);
+
+                $nombre_archivo= "escritura.".$extension;
                 move_uploaded_file($_FILES["pro_escritura"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoInsert.=",pro_escritura";
                 $valueInsert.=",'$new_dire/$nombre_archivo'";
             }
 
             if ($_FILES["pro_certifitradi"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_certifitradi"]["name"]);
-                $nombre_archivo= "tradicion.".$extension[1];
+                $extension = pathinfo($_FILES["pro_certifitradi"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "tradicion.".$extension;
                 move_uploaded_file($_FILES["pro_certifitradi"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoInsert.=",pro_certiftradi";
                 $valueInsert.=",'$new_dire/$nombre_archivo'";
             }
 
             if ($_FILES["pro_impredial"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_impredial"]["name"]);
-                $nombre_archivo= "predial.".$extension[1];
+                $extension = pathinfo($_FILES["pro_impredial"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "predial.".$extension;
                 move_uploaded_file($_FILES["pro_impredial"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoInsert.=",pro_impredial";
                 $valueInsert.=",'$new_dire/$nombre_archivo'";
             }
 
             if ($_FILES["pro_otroarch"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_otroarch"]["name"]);
-                $nombre_archivo= "otroarchivo.".$extension[1];
+                $extension = pathinfo($_FILES["pro_otroarch"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "otroarchivo.".$extension;
                 move_uploaded_file($_FILES["pro_otroarch"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoInsert.=",pro_otroarch";
                 $valueInsert.=",'$new_dire/$nombre_archivo'";
             }
 
             if ($_FILES["pro_foto1"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_foto1"]["name"]);
-                $nombre_archivo= "foto1.".$extension[1];
+                $extension = pathinfo($_FILES["pro_foto1"]["name"], PATHINFO_EXTENSION);
+                // $extension =   explode('.',$_FILES["pro_foto1"]["name"]);
+                $nombre_archivo= "foto1.".$extension;
                 move_uploaded_file($_FILES["pro_foto1"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoInsert.=",pro_foto1";
                 $valueInsert.=",'$new_dire/$nombre_archivo'";
             }
             if ($_FILES["pro_foto2"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_foto2"]["name"]);
-                $nombre_archivo= "foto2.".$extension[1];
+                $extension = pathinfo($_FILES["pro_foto2"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "foto2.".$extension;
                 move_uploaded_file($_FILES["pro_foto2"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoInsert.=",pro_foto2";
                 $valueInsert.=",'$new_dire/$nombre_archivo'";
             }
             if ($_FILES["pro_foto3"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_foto3"]["name"]);
-                $nombre_archivo= "foto3.".$extension[1];
+                $extension = pathinfo($_FILES["pro_foto3"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "foto3.".$extension;
                 move_uploaded_file($_FILES["pro_foto3"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoInsert.=",pro_foto3";
                 $valueInsert.=",'$new_dire/$nombre_archivo'";
             }
             if ($_FILES["pro_foto4"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_foto4"]["name"]);
-                $nombre_archivo= "foto4.".$extension[1];
+                $extension = pathinfo($_FILES["pro_foto4"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "foto4.".$extension;
                 move_uploaded_file($_FILES["pro_foto4"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoInsert.=",pro_foto4";
                 $valueInsert.=",'$new_dire/$nombre_archivo'";
             }
             if ($_FILES["pro_foto5"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_foto5"]["name"]);
-                $nombre_archivo= "foto5.".$extension[1];
+                $extension = pathinfo($_FILES["pro_foto5"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "foto5.".$extension;
                 move_uploaded_file($_FILES["pro_foto5"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoInsert.=",pro_foto5";
                 $valueInsert.=",'$new_dire/$nombre_archivo'";
             }
             if ($_FILES["pro_foto6"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_foto6"]["name"]);
-                $nombre_archivo= "foto6.".$extension[1];
+                $extension = pathinfo($_FILES["pro_foto6"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "foto6.".$extension;
                 move_uploaded_file($_FILES["pro_foto6"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoInsert.=",pro_foto6";
                 $valueInsert.=",'$new_dire/$nombre_archivo'";
@@ -215,83 +215,83 @@ class proyectoControlador
 
             $campoUpd="";
             if ($_FILES["autocat_new"]["tmp_name"]!='' ) {                
-                $extension =   explode('.',$_FILES["autocat_new"]["name"]);
-                $nombre_archivo= "autocat.".$extension[1];
+                $extension = pathinfo($_FILES["autocat_new"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "autocat.".$extension;
                 delete_archivo($detalle,'pro_autocat',$codigo_proyecto);
                 move_uploaded_file($_FILES["autocat_new"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoUpd.=",pro_autocat='$new_dire/$nombre_archivo'";
             }
 
             if ($_FILES["escritura_new"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["escritura_new"]["name"]);
-                $nombre_archivo= "escritura.".$extension[1];
+                $extension = pathinfo($_FILES["escritura_new"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "escritura.".$extension;
                 delete_archivo($detalle,'pro_escritura',$codigo_proyecto);
                 move_uploaded_file($_FILES["escritura_new"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoUpd.=",pro_escritura='$new_dire/$nombre_archivo'";
             }
 
             if ($_FILES["certifitradi_new"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["certifitradi_new"]["name"]);
-                $nombre_archivo= "tradicion.".$extension[1];
+                 $extension = pathinfo($_FILES["certifitradi_new"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "tradicion.".$extension;
                 delete_archivo($detalle,'pro_certiftradi',$codigo_proyecto);
                 move_uploaded_file($_FILES["certifitradi_new"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoUpd.=",pro_certiftradi='$new_dire/$nombre_archivo'";
             }
 
             if ($_FILES["impredial_new"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["impredial_new"]["name"]);
-                $nombre_archivo= "predial.".$extension[1];
+                $extension = pathinfo($_FILES["impredial_new"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "predial.".$extension;
                 delete_archivo($detalle,'pro_impredial',$codigo_proyecto);
                 move_uploaded_file($_FILES["impredial_new"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoUpd.=",pro_impredial='$new_dire/$nombre_archivo'";
             }
 
             if ($_FILES["otroarch_new"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["otroarch_new"]["name"]);
-                $nombre_archivo= "otroarchivo.".$extension[1];
+                $extension = pathinfo($_FILES["otroarch_new"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "otroarchivo.".$extension;
                 delete_archivo($detalle,'pro_otroarch',$codigo_proyecto);
                 move_uploaded_file($_FILES["otroarch_new"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoUpd.=",pro_otroarch='$new_dire/$nombre_archivo'";
             }
 
             if ($_FILES["pro_foto1"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_foto1"]["name"]);
-                $nombre_archivo= "foto1.".$extension[1]; 
+                $extension = pathinfo($_FILES["pro_foto1"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "foto1.".$extension; 
                 delete_archivo($detalle,'pro_foto1',$codigo_proyecto);
                 move_uploaded_file($_FILES["pro_foto1"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoUpd.=",pro_foto1='$new_dire/$nombre_archivo'";
             }
             if ($_FILES["pro_foto2"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_foto2"]["name"]);
-                $nombre_archivo= "foto2.".$extension[1];
+                $extension = pathinfo($_FILES["pro_foto2"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "foto2.".$extension;
                 delete_archivo($detalle,'pro_foto2',$codigo_proyecto);
                 move_uploaded_file($_FILES["pro_foto2"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoUpd.=",pro_foto2 ='$new_dire/$nombre_archivo'";
             }
             if ($_FILES["pro_foto3"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_foto3"]["name"]);
-                $nombre_archivo= "foto3.".$extension[1];
+                $extension = pathinfo($_FILES["pro_foto3"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "foto3.".$extension;
                 delete_archivo($detalle,'pro_foto3',$codigo_proyecto);
                 move_uploaded_file($_FILES["pro_foto3"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoUpd.=",pro_foto3='$new_dire/$nombre_archivo'";
             }
             if ($_FILES["pro_foto4"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_foto4"]["name"]);
-                $nombre_archivo= "foto4.".$extension[1];
+                $extension = pathinfo($_FILES["pro_foto4"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "foto4.".$extension;
                 delete_archivo($detalle,'pro_foto4',$codigo_proyecto);
                 move_uploaded_file($_FILES["pro_foto4"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoUpd.=",pro_foto4='$new_dire/$nombre_archivo'";
             }
             if ($_FILES["pro_foto5"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_foto5"]["name"]);
-                $nombre_archivo= "foto5.".$extension[1];
+                $extension = pathinfo($_FILES["pro_foto5"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "foto5.".$extension;
                 delete_archivo($detalle,'pro_foto5',$codigo_proyecto);
                 move_uploaded_file($_FILES["pro_foto5"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoUpd.=",pro_foto5='$new_dire/$nombre_archivo'";
             }
             if ($_FILES["pro_foto6"]["tmp_name"]!='' ) {
-                $extension =   explode('.',$_FILES["pro_foto6"]["name"]);
-                $nombre_archivo= "foto6.".$extension[1];
+                $extension = pathinfo($_FILES["pro_foto6"]["name"], PATHINFO_EXTENSION);
+                $nombre_archivo= "foto6.".$extension;
                 delete_archivo($detalle,'pro_foto6',$codigo_proyecto);
                 move_uploaded_file($_FILES["pro_foto6"]["tmp_name"], $new_dire."/$nombre_archivo");
                 $campoUpd.=",pro_foto6='$new_dire/$nombre_archivo'";

@@ -20,9 +20,9 @@
     require_once "./vistas/modulos/pdf_cotizacion.php";
 
 include_once ("global.inc");
-require 'vistas/PHPMailer/Exception.php';
-require 'vistas/PHPMailer/PHPMailer.php';
-require 'vistas/PHPMailer/SMTP.php';
+require '/var/www/html/vistas/PHPmailer/Exception.php';
+require '/var/www/html/vistas/PHPmailer/PHPMailer.php';
+require '/var/www/html/vistas/PHPmailer/SMTP.php';
 
 $plantilla = new PlantillaControlador();
 

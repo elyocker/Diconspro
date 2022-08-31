@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
         <title> Diconspro | <?php $nom_pes = isset($_GET["vista"]) ? $_GET["vista"] : "inicio"; echo $nom_pes; ?></title>
-
+        <!-- icono de la pestaña  -->
+        <link rel="icon" href="vistas/dist/img/logo.png">
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->

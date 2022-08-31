@@ -53,7 +53,7 @@ class usuarioControlador
                             $upd_camp="";
                             if ($ip_usuario!='::1') {
                                 $dataArray = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip_usuario));
-                                $pais_usuario= $dataArray["geoplugin_countryName"];
+                                $pais_usuario= $dataArray->geoplugin_countryName;
                                 $upd_camp=",usu_ipcone='$ip_usuario',
                                             usu_paiscone='$pais_usuario'";
                             }

@@ -92,7 +92,7 @@
         </div>
  
           <div class="card-body table-responsive p-0">
-            <table class="table table-striped table-valign-middle">
+            <table class="table table-striped table-valign-middle" id="table_balance">
               <thead>
               <tr>
               <th>Id</th>
