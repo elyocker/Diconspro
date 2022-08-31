@@ -1,6 +1,6 @@
 <?php
 
-$ipConect="127.0.0.1";
+$ipConect="localhost";
 $usuConect="root";
 $passConect="";
 $proyeConect="diconspro";
