@@ -6,7 +6,7 @@
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="#" class="h1"><b>Diconspro</b></a>
+                <a href="#" class="h1"><b>PRUEBA EXITOSA</b></a>
             </div>
             <div class="card-body">
                  <p class="login-box-msg">Inicia sesión</p>
